@@ -4,6 +4,9 @@ import UsersMiddleware from "./middleware/users.middleware";
 import express from "express";
 import BodyValidationMiddleware from "../common/middleware/body.validation.middleware";
 import { body } from "express-validator";
+import jwtMiddleware from "../auth/middleware/jwt.middleware";
+import permissionMiddleware from "../common/middleware/common.permission.middleware";
+import { PermissionFlag } from "../common/middleware/common.permissionflag.enum";
 
 export class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -13,7 +16,13 @@ export class UsersRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application {
     this.app
       .route(`/users`)
-      .get(UsersController.listUsers)
+      .get(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.ADMIN_PERMISSION
+        ),
+        UsersController.listUsers
+      )
       .post(
         body("email").isEmail(),
         body("password")
@@ -27,7 +36,11 @@ export class UsersRoutes extends CommonRoutesConfig {
     this.app.param(`userId`, UsersMiddleware.extractUserId);
     this.app
       .route(`/users/:userId`)
-      .all(UsersMiddleware.validateUserExists)
+      .all(
+        UsersMiddleware.validateUserExists,
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.onlySameUserOrAdminCanDoThisAction
+      )
       .get(UsersController.getUserById)
       .delete(UsersController.removeUser);
 
@@ -40,6 +53,7 @@ export class UsersRoutes extends CommonRoutesConfig {
       body("lastName").isString(),
       body("permissionFlags").isInt(),
       BodyValidationMiddleware.verifyBodyFieldsErrors,
+      UsersMiddleware.userCantChangePermission,
       UsersController.put,
     ]);
 
@@ -54,6 +68,13 @@ export class UsersRoutes extends CommonRoutesConfig {
       body("permissionFlags").isInt().optional(),
       BodyValidationMiddleware.verifyBodyFieldsErrors,
       UsersMiddleware.validatePatchEmail,
+      UsersMiddleware.userCantChangePermission,
+      /* the following could be uncommented to require a specific permission
+       * to use this route. Replace the flag with the flag of your choosing
+       */
+      // permissionMiddleware.permissionFlagRequired(
+      //   PermissionFlag.APP_PERMISSION_A
+      // ),
       UsersController.patch,
     ]);
 
