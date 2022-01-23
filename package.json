@@ -12,6 +12,7 @@
   "author": "Codemaster Mick",
   "license": "ISC",
   "dependencies": {
+    "argon2": "^0.28.3",
     "cors": "^2.8.5",
     "debug": "^4.3.3",
     "express": "^4.17.2",
