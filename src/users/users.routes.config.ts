@@ -40,7 +40,6 @@ export class UsersRoutes extends CommonRoutesConfig {
       body("lastName").isString(),
       body("permissionFlags").isInt(),
       BodyValidationMiddleware.verifyBodyFieldsErrors,
-      UsersMiddleware.validateSameEmailBelongToSameUser,
       UsersController.put,
     ]);
 
