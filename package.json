@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsc && node --unhandled-rejections=strict ./dist/app.js",
     "debug": "cross-env DEBUG=* && npm run start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -r ts-node/register 'test/**/*.test.ts' --unhandled-rejections=strict",
+    "test-debug": "cross-env DEBUG=* && npm test"
   },
   "keywords": [],
   "author": "Codemaster Mick",
