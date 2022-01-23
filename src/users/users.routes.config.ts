@@ -57,6 +57,19 @@ export class UsersRoutes extends CommonRoutesConfig {
       UsersController.put,
     ]);
 
+    this.app.put(`/users/:userId/permissionFlags/:permissionFlags`, [
+      jwtMiddleware.validJWTNeeded,
+      permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
+      // Note: The above two pieces of middleware are needed despite
+      // the reference to them in the .all() call, because that only covers
+      // /users/:userId, not anything beneath it in the hierarchy
+      //TODO this allows anyone to update their own permissions. MASSIVE SECURITY RISK IF LEFT UNATTENDED
+      permissionMiddleware.permissionFlagRequired(
+        PermissionFlag.FREE_PERMISSION
+      ),
+      UsersController.updatePermissionFlags,
+    ]);
+
     this.app.patch(`/users/:userId`, [
       body("email").isEmail().optional(),
       body("password")
@@ -69,12 +82,13 @@ export class UsersRoutes extends CommonRoutesConfig {
       BodyValidationMiddleware.verifyBodyFieldsErrors,
       UsersMiddleware.validatePatchEmail,
       UsersMiddleware.userCantChangePermission,
-      /* the following could be uncommented to require a specific permission
-       * to use this route. Replace the flag with the flag of your choosing
+      /* the following could be used to require a specific permission
+       * to use a route. Simply replace the flag with the flag of your choosing
+       * and add it to the end of the middleware chain for the route
        */
-      // permissionMiddleware.permissionFlagRequired(
-      //   PermissionFlag.APP_PERMISSION_A
-      // ),
+      permissionMiddleware.permissionFlagRequired(
+        PermissionFlag.APP_PERMISSION_A
+      ),
       UsersController.patch,
     ]);
 

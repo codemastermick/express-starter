@@ -9,6 +9,7 @@ import argon2 from "argon2";
 
 // we use debug with a custom context as described in Part 1
 import debug from "debug";
+import { PatchUserDto } from "../dto/patch.user.dto";
 
 const log: debug.IDebugger = debug("app:users-controller");
 class UsersController {
@@ -44,6 +45,15 @@ class UsersController {
 
   async removeUser(req: express.Request, res: express.Response) {
     log(await usersService.deleteById(req.body.id));
+    res.status(204).send();
+  }
+
+  //TODO this should not be accessible to users, but is not an admin only function
+  async updatePermissionFlags(req: express.Request, res: express.Response) {
+    const patchUserDto: PatchUserDto = {
+      permissionFlags: parseInt(req.params.permissionFlags),
+    };
+    log(await usersService.patchById(req.body.id, patchUserDto));
     res.status(204).send();
   }
 }
