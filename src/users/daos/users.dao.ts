@@ -45,6 +45,12 @@ class UsersDao {
     return this.User.findOne({ _id: userId }).populate("User").exec();
   }
 
+  async getUserByEmailWithPassword(email: string) {
+    return this.User.findOne({ email: email })
+      .select("_id email permissionFlags +password")
+      .exec();
+  }
+
   async getUsers(limit = 25, page = 0) {
     return this.User.find()
       .limit(limit)
