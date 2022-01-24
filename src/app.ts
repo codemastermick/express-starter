@@ -13,6 +13,7 @@ import { CommonRoutesConfig } from "./common/common.routes.config";
 import { UsersRoutes } from "./users/users.routes.config";
 import { AuthRoutes } from "./auth/auth.routes.config";
 import debug from "debug";
+import helmet from "helmet";
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -25,6 +26,7 @@ app.use(express.json());
 
 // here we are adding middleware to allow cross-origin requests
 app.use(cors());
+app.use(helmet());
 
 // here we are preparing the expressWinston logging middleware configuration,
 // which will automatically log all HTTP requests handled by Express.js
