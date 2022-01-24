@@ -6,11 +6,11 @@
  */
 //TODO change these flags to be relevant to your project
 export enum PermissionFlag {
-  FREE_PERMISSION = 1,
-  APP_PERMISSION_A = 2,
-  APP_PERMISSION_B = 4,
-  PAID_FEATURE_A = 8,
-  PAID_FEATURE_B = 16,
-  ADMIN_PERMISSION = 32,
-  ALL_PERMISSIONS = 2147483647,
+    FREE_PERMISSION = 1,
+    APP_PERMISSION_A = 2,
+    APP_PERMISSION_B = 4,
+    PAID_FEATURE_A = 8,
+    PAID_FEATURE_B = 16,
+    ADMIN_PERMISSION = 32,
+    ALL_PERMISSIONS = 2147483647,
 }
