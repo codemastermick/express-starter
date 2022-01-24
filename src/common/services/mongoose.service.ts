@@ -1,48 +1,48 @@
-import mongoose, { ConnectOptions } from "mongoose";
-import debug from "debug";
+import mongoose, { ConnectOptions } from 'mongoose';
+import debug from 'debug';
 
-const log: debug.IDebugger = debug("app:mongoose-service");
+const log: debug.IDebugger = debug('app:mongoose-service');
 // const dbURL = "172.24.213.86";
-const dbURL = "localhost";
-const dbPort = "27017";
-const databaseName = "express-template";
+const dbURL = 'localhost';
+const dbPort = '27017';
+const databaseName = 'express-template';
 
 class MongooseService {
-  private count = 0;
-  private mongooseOptions: ConnectOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,
-    useFindAndModify: false,
-  };
+    private count = 0;
+    private mongooseOptions: ConnectOptions = {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        serverSelectionTimeoutMS: 5000,
+        useFindAndModify: false,
+    };
 
-  constructor() {
-    this.connectWithRetry();
-  }
+    constructor() {
+        this.connectWithRetry();
+    }
 
-  getMongoose() {
-    return mongoose;
-  }
+    getMongoose() {
+        return mongoose;
+    }
 
-  connectWithRetry = () => {
-    log("Attempting MongoDB connection (will retry if needed)");
-    mongoose
-      .connect(
-        `mongodb://${dbURL}:${dbPort}/${databaseName}`,
-        this.mongooseOptions
-      )
-      .then(() => {
-        log("MongoDB is connected");
-      })
-      .catch((err) => {
-        const retrySeconds = 5;
-        log(
-          `MongoDB connection unsuccessful (will retry #${++this
-            .count} after ${retrySeconds} seconds):`,
-          err
-        );
-        setTimeout(this.connectWithRetry, retrySeconds * 1000);
-      });
-  };
+    connectWithRetry = () => {
+        log('Attempting MongoDB connection (will retry if needed)');
+        mongoose
+            .connect(
+                `mongodb://${dbURL}:${dbPort}/${databaseName}`,
+                this.mongooseOptions
+            )
+            .then(() => {
+                log('MongoDB is connected');
+            })
+            .catch((err) => {
+                const retrySeconds = 5;
+                log(
+                    `MongoDB connection unsuccessful (will retry #${++this
+                        .count} after ${retrySeconds} seconds):`,
+                    err
+                );
+                setTimeout(this.connectWithRetry, retrySeconds * 1000);
+            });
+    };
 }
 export default new MongooseService();
