@@ -1,5 +1,6 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import debug from 'debug';
+import { dbConnectionUrl } from '../config/db.config';
 
 const log: debug.IDebugger = debug('app:mongoose-service');
 // const dbURL = "172.24.213.86";
@@ -27,10 +28,7 @@ class MongooseService {
   connectWithRetry = () => {
     log('Attempting MongoDB connection (will retry if needed)');
     mongoose
-      .connect(
-        `mongodb://${dbURL}:${dbPort}/${databaseName}`,
-        this.mongooseOptions
-      )
+      .connect(dbConnectionUrl, this.mongooseOptions)
       .then(() => {
         log('MongoDB is connected');
       })
