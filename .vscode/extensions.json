@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "humao.rest-client",
+        "usernamehw.errorlens",
+        "gruntfuggly.todo-tree"
+    ]
+}
