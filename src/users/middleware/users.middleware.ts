@@ -1,8 +1,8 @@
-import express from "express";
-import userService from "../services/users.service";
-import debug from "debug";
+import express from 'express';
+import userService from '../services/users.service';
+import debug from 'debug';
 
-const log: debug.IDebugger = debug("app:users-controller");
+const log: debug.IDebugger = debug('app:users-controller');
 class UsersMiddleware {
   async validateSameEmailDoesntExist(
     req: express.Request,
@@ -36,7 +36,7 @@ class UsersMiddleware {
     next: express.NextFunction
   ) => {
     if (req.body.email) {
-      log("Validating email", req.body.email);
+      log('Validating email', req.body.email);
 
       this.validateSameEmailBelongToSameUser(req, res, next);
     } else {
@@ -75,11 +75,11 @@ class UsersMiddleware {
     next: express.NextFunction
   ) {
     if (
-      "permissionFlags" in req.body &&
+      'permissionFlags' in req.body &&
       req.body.permissionFlags !== res.locals.user.permissionFlags
     ) {
       res.status(400).send({
-        errors: ["User cannot change permission flags"],
+        errors: ['User cannot change permission flags'],
       });
     } else {
       next();

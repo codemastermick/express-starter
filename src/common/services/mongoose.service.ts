@@ -1,11 +1,11 @@
-import mongoose, { ConnectOptions } from "mongoose";
-import debug from "debug";
+import mongoose, { ConnectOptions } from 'mongoose';
+import debug from 'debug';
 
-const log: debug.IDebugger = debug("app:mongoose-service");
+const log: debug.IDebugger = debug('app:mongoose-service');
 // const dbURL = "172.24.213.86";
-const dbURL = "localhost";
-const dbPort = "27017";
-const databaseName = "express-template";
+const dbURL = 'localhost';
+const dbPort = '27017';
+const databaseName = 'express-template';
 
 class MongooseService {
   private count = 0;
@@ -25,14 +25,14 @@ class MongooseService {
   }
 
   connectWithRetry = () => {
-    log("Attempting MongoDB connection (will retry if needed)");
+    log('Attempting MongoDB connection (will retry if needed)');
     mongoose
       .connect(
         `mongodb://${dbURL}:${dbPort}/${databaseName}`,
         this.mongooseOptions
       )
       .then(() => {
-        log("MongoDB is connected");
+        log('MongoDB is connected');
       })
       .catch((err) => {
         const retrySeconds = 5;

@@ -1,12 +1,12 @@
-import { CreateUserDto } from "../dto/create.user.dto";
-import { PatchUserDto } from "../dto/patch.user.dto";
-import { PutUserDto } from "../dto/put.user.dto";
-import shortid from "shortid";
-import debug from "debug";
-import mongooseService from "../../common/services/mongoose.service";
-import { PermissionFlag } from "../../common/middleware/common.permissionflag.enum";
+import { CreateUserDto } from '../dto/create.user.dto';
+import { PatchUserDto } from '../dto/patch.user.dto';
+import { PutUserDto } from '../dto/put.user.dto';
+import shortid from 'shortid';
+import debug from 'debug';
+import mongooseService from '../../common/services/mongoose.service';
+import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
 
-const log: debug.IDebugger = debug("app:in-memory-dao");
+const log: debug.IDebugger = debug('app:in-memory-dao');
 
 class UsersDao {
   Schema = mongooseService.getMongoose().Schema;
@@ -21,10 +21,10 @@ class UsersDao {
     },
     { id: false }
   );
-  User = mongooseService.getMongoose().model("Users", this.userSchema);
+  User = mongooseService.getMongoose().model('Users', this.userSchema);
 
   constructor() {
-    log("Created new instance of UsersDao");
+    log('Created new instance of UsersDao');
   }
 
   async addUser(userFields: CreateUserDto) {
@@ -43,12 +43,12 @@ class UsersDao {
   }
 
   async getUserById(userId: string) {
-    return this.User.findOne({ _id: userId }).populate("User").exec();
+    return this.User.findOne({ _id: userId }).populate('User').exec();
   }
 
   async getUserByEmailWithPassword(email: string) {
     return this.User.findOne({ email: email })
-      .select("_id email permissionFlags +password")
+      .select('_id email permissionFlags +password')
       .exec();
   }
 

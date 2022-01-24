@@ -1,25 +1,25 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 const dotenvResult = dotenv.config();
 if (dotenvResult.error) {
   throw dotenvResult.error;
 }
-import express from "express";
-import * as http from "http";
+import express from 'express';
+import * as http from 'http';
 
-import * as winston from "winston";
-import * as expressWinston from "express-winston";
-import cors from "cors";
-import { CommonRoutesConfig } from "./common/common.routes.config";
-import { UsersRoutes } from "./users/users.routes.config";
-import { AuthRoutes } from "./auth/auth.routes.config";
-import debug from "debug";
-import helmet from "helmet";
+import * as winston from 'winston';
+import * as expressWinston from 'express-winston';
+import cors from 'cors';
+import { CommonRoutesConfig } from './common/common.routes.config';
+import { UsersRoutes } from './users/users.routes.config';
+import { AuthRoutes } from './auth/auth.routes.config';
+import debug from 'debug';
+import helmet from 'helmet';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
 const port = process.env.PORT;
 const routes: Array<CommonRoutesConfig> = [];
-const debugLog: debug.IDebugger = debug("app");
+const debugLog: debug.IDebugger = debug('app');
 
 // here we are adding middleware to parse all incoming requests as JSON
 app.use(express.json());
@@ -41,8 +41,8 @@ const loggerOptions: expressWinston.LoggerOptions = {
 
 if (!process.env.DEBUG) {
   loggerOptions.meta = false; // when not debugging, log requests as one-liners
-  if (typeof global.it === "function") {
-    loggerOptions.level = "http"; // for non-debug test runs, squelch entirely
+  if (typeof global.it === 'function') {
+    loggerOptions.level = 'http'; // for non-debug test runs, squelch entirely
   }
 }
 
@@ -57,7 +57,7 @@ routes.push(new AuthRoutes(app));
 
 // this is a simple route to make sure everything is working properly
 const runningMessage = `Server running at http://localhost:${port}`;
-app.get("/", (req: express.Request, res: express.Response) => {
+app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).send(runningMessage);
 });
 

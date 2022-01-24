@@ -1,6 +1,6 @@
-import express from "express";
-import usersService from "../../users/services/users.service";
-import * as argon2 from "argon2";
+import express from 'express';
+import usersService from '../../users/services/users.service';
+import * as argon2 from 'argon2';
 
 class AuthMiddleware {
   async verifyUserPassword(
@@ -24,7 +24,7 @@ class AuthMiddleware {
     }
     // Giving the same message in both cases
     // helps protect against cracking attempts:
-    res.status(400).send({ errors: ["Invalid email and/or password"] });
+    res.status(400).send({ errors: ['Invalid email and/or password'] });
   }
 }
 
