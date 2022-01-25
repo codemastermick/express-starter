@@ -3,10 +3,6 @@ import debug from 'debug';
 import { dbConnectionUrl } from '../config/db.config';
 
 const log: debug.IDebugger = debug('app:mongoose-service');
-// const dbURL = "172.24.213.86";
-const dbURL = 'localhost';
-const dbPort = '27017';
-const databaseName = 'express-template';
 
 class MongooseService {
   private count = 0;
