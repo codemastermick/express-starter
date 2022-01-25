@@ -1,4 +1,4 @@
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_LOCAL_PORT, DB_DATABASE } =
-  process.env;
+const { DB_CONNECTION_STRING } = process.env;
 
-export const dbConnectionUrl = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_LOCAL_PORT}/${DB_DATABASE}?authSource=admin`;
+export const dbConnectionUrl = DB_CONNECTION_STRING as string;
+// export const dbConnectionUrl = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
