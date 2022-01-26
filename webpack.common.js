@@ -1,5 +1,6 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -12,12 +13,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         use: [
-          { loader: 'ts-loader', options: { transpileOnly: true } }
+          { loader: 'ts-loader', options: { happyPackMode: true } }
         ],
-        include: path.resolve(__dirname, 'src'),
-        exclude: /node_modules/,
+        include: path.resolve(__dirname, './src'),
+        exclude: path.resolve(__dirname, './node_modules'),
       },
     ],
   },
@@ -27,10 +28,12 @@ module.exports = {
   target: 'node',
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true
+    path: path.resolve(__dirname, 'dist/'),
+    clean: true,
+    publicPath: './dist/'
   },
   optimization: {
     usedExports: true
-  }
+  },
+  plugins: [new ForkTsCheckerWebpackPlugin()]
 };
