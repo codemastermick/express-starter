@@ -5,8 +5,8 @@
   "main": "dist/index.bundle.js",
   "sideEffects": false,
   "scripts": {
-    "build": "webpack",
-    "build:prod": "cross-env NODE_ENV=production webpack",
+    "build": "webpack --config webpack.dev.js",
+    "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
     "dev": "nodemon --watch src -e ts,js,json --exec npm run start",
     "debug": "nodemon --watch src -e ts,js,json --exec npm run start:debug",
     "prestart": "npm run build",

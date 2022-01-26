@@ -1,10 +1,5 @@
-require('dotenv').config();
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-
-const {
-  NODE_ENV = 'production',
-} = process.env;
 
 module.exports = {
   entry: {
@@ -12,8 +7,6 @@ module.exports = {
     auth: './src/auth/auth.routes.config.ts',
     users: './src/users/users.routes.config.ts'
   },
-  mode: NODE_ENV,
-  devtool: 'inline-source-map',
   externalsPresets: { node: true },
   externals: [nodeExternals()],
   module: {
