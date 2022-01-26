@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const {
@@ -12,9 +13,6 @@ module.exports = {
   },
   mode: NODE_ENV,
   devtool: 'inline-source-map',
-  devServer: {
-    static: './dist',
-  },
   externalsPresets: { node: true },
   externals: [nodeExternals()],
   module: {
@@ -37,6 +35,5 @@ module.exports = {
   },
   optimization: {
     usedExports: true
-  },
-  watch: NODE_ENV === 'development'
+  }
 };
