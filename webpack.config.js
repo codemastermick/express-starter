@@ -10,7 +10,6 @@ module.exports = {
     auth: './src/auth/auth.routes.config.ts',
     users: './src/users/users.routes.config.ts'
   },
-  // entry: './src/app.ts',
   mode: NODE_ENV,
   devtool: 'inline-source-map',
   devServer: {
@@ -30,6 +29,7 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
+  target: 'node',
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
