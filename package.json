@@ -7,14 +7,13 @@
   "scripts": {
     "build": "webpack",
     "build:prod": "cross-env NODE_ENV=production webpack",
-    "serve": "webpack serve --open",
-    "watch": "cross-env NODE_ENV=development webpack",
     "dev": "nodemon --watch src -e ts,js,json --exec npm run start",
+    "debug": "nodemon --watch src -e ts,js,json --exec npm run start:debug",
     "prestart": "npm run build",
     "start": "node --unhandled-rejections=strict ./dist/index.bundle.js",
-    "debug": "cross-env DEBUG=* && npm run start",
+    "start:debug": "cross-env DEBUG=* npm run start",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts' --unhandled-rejections=strict",
-    "test:debug": "cross-env DEBUG=* && npm test"
+    "test:debug": "cross-env DEBUG=* npm test"
   },
   "keywords": [],
   "author": "Codemaster Mick",
