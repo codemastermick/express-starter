@@ -13,12 +13,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         use: [
-          { loader: 'ts-loader', options: { happyPackMode: true } }
+          { loader: 'ts-loader', options: { transpileOnly: true } }
         ],
-        include: path.resolve(__dirname, './src'),
-        exclude: path.resolve(__dirname, './node_modules'),
+        include: /src/,
+        exclude: /node_modules/,
       },
     ],
   },
