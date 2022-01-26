@@ -1,6 +1,7 @@
 require('dotenv').config();
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+
 const {
   NODE_ENV = 'production',
 } = process.env;
@@ -19,7 +20,10 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: [
+          { loader: 'ts-loader', options: { transpileOnly: true } }
+        ],
+        include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
       },
     ],
