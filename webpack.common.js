@@ -15,7 +15,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: [
-          { loader: 'ts-loader', options: { transpileOnly: true } }
+          { loader: 'ts-loader', options: { transpileOnly: true } },
         ],
         include: /src/,
         exclude: /node_modules/,
@@ -35,5 +35,7 @@ module.exports = {
   optimization: {
     usedExports: true
   },
-  plugins: [new ForkTsCheckerWebpackPlugin()]
+  plugins: [
+    new ForkTsCheckerWebpackPlugin()
+  ]
 };
