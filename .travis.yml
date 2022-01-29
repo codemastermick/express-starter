@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 16
+before_install:
+  - npm i -g npm
+script:
+  - echo 'Installing dependencies...'
+  - npm install
+  - echo 'Starting build...'
+  - npm run build:prod
+  - echo 'Running test suite...'
+  - npm run test:coverage
+  - echo 'Uploading coverage results...'
+  - npm run codacy
+  - echo 'BUILD COMPLETE'
