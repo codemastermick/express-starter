@@ -27,9 +27,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - name: Make Build Production
     - run: npm run build:prod
-    - name: Run Tests and Get Coverage Data
     - run: npm run test:coverage
-    - name: Upload Coverage Data to Codacy
     - run: npm run codacy
