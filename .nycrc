@@ -7,5 +7,6 @@
   ],
   "reporter": [
     "lcov"
-  ]
+  ],
+  "clean": true
 }
