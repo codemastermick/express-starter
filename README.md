@@ -10,19 +10,24 @@ This project serves as a batteries included backend server, ready to use out of 
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/96b12a825e6846a1aa3a4fef8aca9615)](https://www.codacy.com/gh/codemastermick/express-starter/dashboard?utm_source=github.com&utm_medium=referral&utm_content=codemastermick/express-starter&utm_campaign=Badge_Grade)
 
-## :construction: Please note that this project is still in heavy development and is not recommended for production applications yet :construction:
+## :warning: Please note that this project is still in heavy development and is not recommended for production applications yet :warning:
 
 ## Feature Roadmap
 
-| Feature                |    Implemented     |    In Progress    |    Backburner     |
-| ---------------------- | :----------------: | :---------------: | :---------------: |
-| Authentication         | :heavy_check_mark: |                   |                   |
-| Role Based Permissions | :heavy_check_mark: |                   |                   |
-| Mongo Database         | :heavy_check_mark: |                   |                   |
-| Full Test Coverage     |                    | :heavy_plus_sign: |                   |
-| Changelog Generation   |                    |                   | :heavy_plus_sign: |
-| Git Hooks              |                    |                   | :heavy_plus_sign: |
-| CI Support             |                    |                   | :heavy_plus_sign: |
+| Feature                |    Implemented     | In Progress | Backburner |
+| ---------------------- | :----------------: | :---------: | :--------: |
+| Authentication         | :heavy_check_mark: |             |            |
+| Role Based Permissions | :heavy_check_mark: |             |            |
+| Mongo Database         | :heavy_check_mark: |             |            |
+| Full Test Coverage     |                    |  :warning:  |            |
+| Changelog Generation   |                    |             |    :o:     |
+| Git Hooks              |                    |             |    :o:     |
+| CI Support             |                    |             |    :o:     |
+| Commitizen Support     |                    |             |    :o:     |
+
+- :heavy_check_mark: - implemented
+- :construction: - not stable
+- :o: - not yet started
 
 ## Getting Started
 
