@@ -1,0 +1,11 @@
+{
+  "diff": true,
+  "extension": ["js", "cjs", "mjs", "ts"],
+  "package": "./package.json",
+  "reporter": "spec",
+  "slow": "75",
+  "timeout": "5000",
+  "ui": "bdd",
+  "watch-files": ["src/**/*.spec.ts", "test/**/*.spec.ts", "test/**/*.test.ts"],
+  "watch-ignore": ["node_modules"]
+}
