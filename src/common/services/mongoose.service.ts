@@ -1,11 +1,16 @@
 import mongoose, { ConnectOptions } from 'mongoose';
-import debug from 'debug';
 import { dbConnectionUrl } from '../config/db.config';
+import ResourceUnavailableException from '../exceptions/resource.unavailable.exception';
+import Logger from './logger.service';
 
-const log: debug.IDebugger = debug('app:mongoose-service');
+// import debug from 'debug';
+// const log: debug.IDebugger = debug('app:mongoose-service');
+const logger = new Logger('SERVICE:mongoose');
 
 class MongooseService {
   private count = 0;
+  private maxTries = 3;
+  private retrySeconds = 5;
   private mongooseOptions: ConnectOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -22,20 +27,26 @@ class MongooseService {
   }
 
   connectWithRetry = () => {
-    log('Attempting MongoDB connection (will retry if needed)');
+    logger.debug('Attempting to connect to MongoDB...');
     mongoose
       .connect(dbConnectionUrl, this.mongooseOptions)
       .then(() => {
-        log('MongoDB is connected');
+        logger.debug('Connected to MongoDB');
       })
       .catch((err) => {
-        const retrySeconds = 5;
-        log(
-          `MongoDB connection unsuccessful (will retry #${++this
-            .count} after ${retrySeconds} seconds):`,
-          err
+        logger.debug(
+          `MongoDB connection attempt #${++this
+            .count} unsuccessful. Retrying in ${this.retrySeconds} seconds`
         );
-        setTimeout(this.connectWithRetry, retrySeconds * 1000);
+        if (
+          err.message.startsWith('querySrv ENOTFOUND') &&
+          this.count >= this.maxTries
+        ) {
+          throw new ResourceUnavailableException(dbConnectionUrl);
+        } else {
+          logger.error(err.message);
+        }
+        setTimeout(this.connectWithRetry, this.retrySeconds * 1000);
       });
   };
 }
