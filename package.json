@@ -16,7 +16,7 @@
     "dev:debug": "cross-env DEBUG=* npm run dev",
     "start": "npm run clean && npm run build:prod && node --unhandled-rejections=strict ./dist/index.bundle.js",
     "start:debug": "cross-env DEBUG=* npm start",
-    "test": "mocha -r ts-node/register '**/*.test.ts' --unhandled-rejections=strict",
+    "test": "mocha --config configs/.mocharc.json -r ts-node/register '**/*.test.ts' --unhandled-rejections=strict",
     "test:coverage": "c8 npm test",
     "test:debug": "cross-env DEBUG=* npm test",
     "test:watch": "npm test -- --watch",
