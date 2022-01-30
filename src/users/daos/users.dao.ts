@@ -5,8 +5,9 @@ import shortid from 'shortid';
 import debug from 'debug';
 import mongooseService from '../../common/services/mongoose.service';
 import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
+import Logger from '../../common/services/logger.service';
 
-const log: debug.IDebugger = debug('app:in-memory-dao');
+const logger = new Logger('User DAO');
 
 class UsersDao {
   Schema = mongooseService.getMongoose().Schema;
@@ -24,7 +25,7 @@ class UsersDao {
   User = mongooseService.getMongoose().model('Users', this.userSchema);
 
   constructor() {
-    log('Created new instance of UsersDao');
+    logger.debug('Created new instance of UsersDao');
   }
 
   async addUser(userFields: CreateUserDto) {
