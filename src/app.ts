@@ -1,8 +1,15 @@
 import dotenv from 'dotenv';
-const dotenvResult = dotenv.config();
-if (dotenvResult.error) {
-  throw dotenvResult.error;
+// const dotenvResult = dotenv.config();
+try {
+  dotenv.config();
+} catch (error) {
+  console.log(error);
 }
+
+// if (dotenvResult.error) {
+//   throw dotenvResult.error;
+// }
+
 import express from 'express';
 import * as http from 'http';
 import cors from 'cors';
