@@ -18,6 +18,7 @@
     "test": "mocha -r ts-node/register '**/*.test.ts' --unhandled-rejections=strict",
     "test:coverage": "c8 npm test",
     "test:debug": "cross-env DEBUG=* npm test",
+    "test:watch": "npm run test -- --watch",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage && rimraf ./coverage"
   },
   "keywords": [],
