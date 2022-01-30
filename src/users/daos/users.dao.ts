@@ -7,7 +7,7 @@ import mongooseService from '../../common/services/mongoose.service';
 import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
 import Logger from '../../common/services/logger.service';
 
-const logger = new Logger('User DAO');
+const logger = new Logger('DAO:Users');
 
 class UsersDao {
   Schema = mongooseService.getMongoose().Schema;
