@@ -1,14 +1,11 @@
-import dotenv from 'dotenv';
-// const dotenvResult = dotenv.config();
+import dotenv from 'dotenv-safe';
 try {
-  dotenv.config();
+  dotenv.config({
+    example: '.env.example',
+  });
 } catch (error) {
-  console.log(error);
+  throw error;
 }
-
-// if (dotenvResult.error) {
-//   throw dotenvResult.error;
-// }
 
 import express from 'express';
 import * as http from 'http';
