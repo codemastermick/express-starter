@@ -17,7 +17,7 @@
     "start": "npm run clean && npm run build:prod && node --unhandled-rejections=strict ./dist/index.bundle.js",
     "start:debug": "cross-env DEBUG=* npm start",
     "test": "mocha --config configs/.mocharc.json -r ts-node/register '**/*.test.ts' --unhandled-rejections=strict",
-    "test:coverage": "c8 npm test",
+    "test:coverage": "c8 -c configs/.c8rc npm test",
     "test:debug": "cross-env DEBUG=* npm test",
     "test:watch": "npm test -- --watch",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage && rimraf ./coverage"
