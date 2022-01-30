@@ -16,11 +16,13 @@ import { AuthRoutes } from './auth/auth.routes.config';
 import helmet from 'helmet';
 import morganMiddleware from './common/middleware/morgan.middleware';
 import Logger from './common/services/logger.service';
+import errorHandler from './common/middleware/error.handler.middleware';
+
+const APP_NAME = process.env.APP_NAME as string;
+const PORT = process.env.PORT as string;
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
-const APP_NAME = process.env.APP_NAME as string;
-const PORT = process.env.PORT as string;
 const routes: Array<CommonRoutesConfig> = [];
 const logger: Logger = new Logger(APP_NAME);
 
@@ -39,10 +41,12 @@ app.use(morganMiddleware);
 routes.push(new UsersRoutes(app));
 // now we add the auth routes the same way as above
 routes.push(new AuthRoutes(app));
+// place the error handling middleware at the end of the chain to ensure we catch all errors
+app.use(errorHandler);
 
 // this is a simple route to make sure everything is working properly
 const runningMessage = `Server running at http://localhost:${PORT}`;
-app.get('/', (req: express.Request, res: express.Response) => {
+app.get('/', (_req: express.Request, res: express.Response) => {
   res.status(200).send(runningMessage);
 });
 
