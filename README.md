@@ -52,6 +52,7 @@ Now you will need to set up your environment variables. This can be done easily 
 
 ```bash
 NODE_ENV=development
+APP_NAME=my-cool-backend-app
 PORT=3000
 JWT_SECRET=My!@!Se3cr8tH4sh3
 DB_CONNECTION_STRING=mongodb+srv://<USERNAME>:<PASSWORD>@<HOSTNAME>/<DATABASE>

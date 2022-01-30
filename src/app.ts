@@ -19,9 +19,10 @@ import Logger from './common/services/logger.service';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
+const APP_NAME = process.env.APP_NAME as string;
 const PORT = process.env.PORT as string;
 const routes: Array<CommonRoutesConfig> = [];
-const logger: Logger = new Logger('express-starter');
+const logger: Logger = new Logger(APP_NAME);
 
 // here we are adding middleware to parse all incoming requests as JSON
 app.use(express.json());
