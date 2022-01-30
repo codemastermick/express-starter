@@ -5,6 +5,9 @@
   "main": "dist/index.bundle.js",
   "sideEffects": false,
   "scripts": {
+    "clean:dist": "rimraf dist",
+    "clean:tests": "rimraf coverage",
+    "clean:all": "concurrently \"npm run clean:dist\" \"npm run clean:tests\"",
     "build": "webpack --config webpack.config.js --no-watch",
     "build:watch": "webpack --config webpack.config.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.config.js",
@@ -12,9 +15,10 @@
     "dev:debug": "cross-env DEBUG=* npm run dev",
     "start": "npm run build:prod && node --unhandled-rejections=strict ./dist/index.bundle.js",
     "start:debug": "cross-env DEBUG=* npm run start",
-    "test": "mocha -r ts-node/register 'test/**/*.test.ts' --unhandled-rejections=strict",
+    "test": "mocha -r ts-node/register '**/*.test.ts' --unhandled-rejections=strict",
     "test:coverage": "c8 npm test",
     "test:debug": "cross-env DEBUG=* npm test",
+    "test:watch": "npm run test -- --watch",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage && rimraf ./coverage"
   },
   "keywords": [],
