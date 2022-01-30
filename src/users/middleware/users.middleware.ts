@@ -4,7 +4,7 @@ import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:users-controller');
 class UsersMiddleware {
-  async validateSameEmailDoesntExist(
+  async validateSameEmailDoesNotExist(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
