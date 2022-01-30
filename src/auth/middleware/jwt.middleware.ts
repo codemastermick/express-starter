@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import { Jwt } from '../../common/types/jwt';
 import usersService from '../../users/services/users.service';
 
-const jwtSecret: string = process.env.JWT_SECRET as string;
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 class JwtMiddleware {
   verifyRefreshBodyField(
@@ -34,7 +34,7 @@ class JwtMiddleware {
     );
     const hash = crypto
       .createHmac('sha512', salt)
-      .update(res.locals.jwt.userId + jwtSecret)
+      .update(res.locals.jwt.userId + JWT_SECRET)
       .digest('base64');
     if (hash === req.body.refreshToken) {
       req.body = {
@@ -59,7 +59,7 @@ class JwtMiddleware {
         if (authorization[0] !== 'Bearer') {
           return res.status(401).send();
         } else {
-          res.locals.jwt = jwt.verify(authorization[1], jwtSecret) as Jwt;
+          res.locals.jwt = jwt.verify(authorization[1], JWT_SECRET) as Jwt;
           next();
         }
       } catch (err) {

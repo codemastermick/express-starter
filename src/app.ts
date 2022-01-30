@@ -19,7 +19,7 @@ import Logger from './common/services/logger.service';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
-const port = process.env.PORT;
+const PORT = process.env.PORT as string;
 const routes: Array<CommonRoutesConfig> = [];
 const logger: Logger = new Logger('express-starter');
 
@@ -40,14 +40,14 @@ routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
 
 // this is a simple route to make sure everything is working properly
-const runningMessage = `Server running at http://localhost:${port}`;
+const runningMessage = `Server running at http://localhost:${PORT}`;
 app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).send(runningMessage);
 });
 
 export default server;
 
-server.listen(port, () => {
+server.listen(PORT, () => {
   routes.forEach((route: CommonRoutesConfig) => {
     logger.debug(`Routes configured for ${route.getName()}`);
   });

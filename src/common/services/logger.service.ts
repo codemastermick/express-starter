@@ -10,9 +10,10 @@ import {
 } from '../config/logger.config';
 
 const { combine, timestamp, label } = winston.format;
+const NODE_ENV = process.env.NODE_ENV as string;
 
 const level = () => {
-  const env = (process.env.NODE_ENV as string) || 'development';
+  const env = NODE_ENV || 'development';
   const isDevelopment = env === 'development';
   return isDevelopment ? 'debug' : 'warn';
 };
