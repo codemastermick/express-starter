@@ -2,9 +2,6 @@ import mongoose, { ConnectOptions } from 'mongoose';
 import { dbConnectionUrl } from '../config/db.config';
 import ResourceUnavailableException from '../exceptions/resource.unavailable.exception';
 import Logger from './logger.service';
-
-// import debug from 'debug';
-// const log: debug.IDebugger = debug('app:mongoose-service');
 const logger = new Logger('SERVICE:mongoose');
 
 class MongooseService {
@@ -43,6 +40,8 @@ class MongooseService {
           this.count >= this.maxTries
         ) {
           throw new ResourceUnavailableException(dbConnectionUrl);
+        } else if (err.message === 'bad auth : Authentication failed.') {
+          logger.error('Invalid MongoDB credentials');
         } else {
           logger.error(err.message);
         }
