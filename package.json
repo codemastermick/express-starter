@@ -12,6 +12,7 @@
     "build": "cross-env NODE_ENV=development webpack --config webpack.config.js --no-watch",
     "build:watch": "cross-env NODE_ENV=development webpack --config webpack.config.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.config.js",
+    "build:ci": "webpack --config webpack.config.js",
     "dev": "npm run clean && npm run build && concurrently --kill-others \"nodemon --watch src -e ts,js --exec node --unhandled-rejections=strict ./dist/index.bundle.js\" \"npm run build:watch\"",
     "dev:debug": "cross-env DEBUG=* npm run dev",
     "start": "npm run clean && npm run build:prod && node --unhandled-rejections=strict ./dist/index.bundle.js",
