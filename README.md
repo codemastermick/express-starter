@@ -10,7 +10,7 @@ This project serves as a batteries included backend server, ready to use out of 
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/96b12a825e6846a1aa3a4fef8aca9615)](https://www.codacy.com/gh/codemastermick/express-starter/dashboard?utm_source=github.com&utm_medium=referral&utm_content=codemastermick/express-starter&utm_campaign=Badge_Grade)
 
-## :warning: Please note that this project is still in heavy development and is not recommended for production applications yet :warning:
+## :warning: Please note that this project is still in heavy development and is not recommended for production applications yet
 
 <hr>
 
