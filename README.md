@@ -48,6 +48,16 @@ cd express-starter
 npm i
 ```
 
+Now you will need to set up your environment variables. This can be done easily by copying the file `.env.example` and renaming it to `.env`. A sample configuration is below:
+
+```bash
+NODE_ENV=development
+PORT=3000
+JWT_SECRET=My!@!Se3cr8tH4sh3
+DB_CONNECTION_STRING=mongodb+srv://<USERNAME>:<PASSWORD>@<HOSTNAME>/<DATABASE>
+CODACY_PROJECT_TOKEN=<PASTE-YOUR-CODACY-TOKEN-HERE>
+```
+
 ## Development[^1]
 
 Running the development server will build the application, then start it and watch for any changes to the codebase, reloading the server when changes are detected:
