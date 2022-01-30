@@ -36,6 +36,7 @@ class UsersDao {
       permissionFlags: PermissionFlag.FREE_PERMISSION,
     });
     await user.save();
+    logger.debug('Created new user');
     return userId;
   }
 
