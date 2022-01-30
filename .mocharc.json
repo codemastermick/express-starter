@@ -4,17 +4,8 @@
   "package": "./package.json",
   "reporter": "spec",
   "slow": "75",
-  "timeout": "5000",
+  "timeout": "2000",
   "ui": "bdd",
-  "watch-files": [
-    "src/**/*.spec.js",
-    "src/**/*.test.js",
-    "src/**/*.spec.ts",
-    "src/**/*.test.ts",
-    "test/**/*.spec.js",
-    "test/**/*.test.js",
-    "test/**/*.spec.ts",
-    "test/**/*.test.ts"
-  ],
+  "watch-files": ["**/*.spec.js", "**/*.spec.ts"],
   "watch-ignore": ["node_modules"]
 }
