@@ -25,11 +25,6 @@ jobs:
       - run: npm ci
       - run: npm run build:prod
       - run: npm run test:coverage
-  codacy-coverage-reporter:
-    runs-on: ubuntu-latest
-    name: codacy-coverage-reporter
-    steps:
-      - uses: actions/checkout@v2
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
