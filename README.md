@@ -12,6 +12,8 @@ This project serves as a batteries included backend server, ready to use out of 
 
 ## :warning: Please note that this project is still in heavy development and is not recommended for production applications yet :warning:
 
+<hr>
+
 ## Feature Roadmap
 
 | Feature                |    Implemented     | In Progress | Backburner |
@@ -24,10 +26,17 @@ This project serves as a batteries included backend server, ready to use out of 
 | Git Hooks              |                    |             |    :o:     |
 | CI Support             |                    |             |    :o:     |
 | Commitizen Support     |                    |             |    :o:     |
+| CLI Tool               |                    |             |    :o:     |
+| MySQL Database         |                    |             |    :o:     |
+| SQLite Database        |                    |             |    :o:     |
 
-- :heavy_check_mark: - implemented
-- :construction: - not stable
-- :o: - not yet started
+:heavy_check_mark: - implemented
+
+:warning: - not fully ready
+
+:o: - not yet started
+
+<hr>
 
 ## Getting Started
 
