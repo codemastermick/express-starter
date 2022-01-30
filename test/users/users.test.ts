@@ -48,20 +48,19 @@ describe('User and Auth Endpoint Tests', function () {
     refreshToken = res.body.refreshToken;
   });
 
-  it('should allow a GET from /users/:userId with an access token', async function () {
-    const res = await request
-      .get(`/users/${firstUserIdTest}`)
-      .set({ Authorization: `Bearer ${accessToken}` })
-      .send();
-    expect(res.status).to.equal(200);
-    expect(res.body).not.to.be.empty;
-    expect(res.body).to.be.an('object');
-    expect(res.body._id).to.be.a('string');
-    expect(res.body._id).to.equal(firstUserIdTest);
-    expect(res.body.email).to.equal(firstUserBody.email);
-  });
-
-  describe('with a valid access token', function () {
+  describe('with a valid access token', async function () {
+    it('should allow a GET from /users/:userId with an access token', async function () {
+      const res = await request
+        .get(`/users/${firstUserIdTest}`)
+        .set({ Authorization: `Bearer ${accessToken}` })
+        .send();
+      expect(res.status).to.equal(200);
+      expect(res.body).not.to.be.empty;
+      expect(res.body).to.be.an('object');
+      expect(res.body._id).to.be.a('string');
+      expect(res.body._id).to.equal(firstUserIdTest);
+      expect(res.body.email).to.equal(firstUserBody.email);
+    });
     it('should disallow a GET to /users', async function () {
       const res = await request
         .get(`/users`)
