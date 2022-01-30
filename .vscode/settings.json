@@ -8,5 +8,9 @@
         "typescript",
         "javascript"
     ],
-    "files.eol": "\n"
+    "files.eol": "\n",
+    "cSpell.words": [
+        "codacy",
+        "lcov"
+    ]
 }
