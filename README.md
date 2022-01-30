@@ -10,7 +10,7 @@ This project serves as a batteries included backend server, ready to use out of 
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/96b12a825e6846a1aa3a4fef8aca9615)](https://www.codacy.com/gh/codemastermick/express-starter/dashboard?utm_source=github.com&utm_medium=referral&utm_content=codemastermick/express-starter&utm_campaign=Badge_Grade)
 
-### :construction: Please note that this project is still in heavy development and is not recommended for production applications yet :construction:
+## :construction: Please note that this project is still in heavy development and is not recommended for production applications yet :construction:
 
 ## Feature Roadmap
 
@@ -60,7 +60,7 @@ npm run build      # build the project in development mode
 npm run build:prod # build the project in production mode
 ```
 
-# Debugging
+## Debugging
 
 **(PRODUCES A LOT OF OUTPUT)**
 
