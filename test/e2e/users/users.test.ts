@@ -1,8 +1,9 @@
-import app from '../../src/app';
+import app from '../../../src/app';
 import supertest from 'supertest';
 import { expect } from 'chai';
 import shortid from 'shortid';
 import mongoose from 'mongoose';
+import { PermissionFlag } from '../../../src/common/enums/common.permissionflag.enum';
 
 let firstUserIdTest = '';
 const firstUserBody = {
@@ -18,8 +19,9 @@ const newLastName2 = 'Everyman';
 
 describe('User and Auth Endpoint Tests', function () {
   let request: supertest.SuperAgentTest;
-  before(function () {
+  before(function (done) {
     request = supertest.agent(app);
+    done();
   });
   after(function (done) {
     // shut down the Express.js server, close our MongoDB connection, then tell Mocha we're done:
@@ -30,7 +32,6 @@ describe('User and Auth Endpoint Tests', function () {
 
   it('should allow a POST to /users', async function () {
     const res = await request.post('/users').send(firstUserBody);
-
     expect(res.status).to.equal(201);
     expect(res.body).not.to.be.empty;
     expect(res.body).to.be.an('object');
@@ -61,7 +62,8 @@ describe('User and Auth Endpoint Tests', function () {
       expect(res.body._id).to.equal(firstUserIdTest);
       expect(res.body.email).to.equal(firstUserBody.email);
     });
-    it('should disallow a GET to /users', async function () {
+
+    it('should not allow a GET to /users', async function () {
       const res = await request
         .get(`/users`)
         .set({ Authorization: `Bearer ${accessToken}` })
@@ -69,7 +71,7 @@ describe('User and Auth Endpoint Tests', function () {
       expect(res.status).to.equal(403);
     });
 
-    it('should disallow a PATCH to /users/:userId', async function () {
+    it('should not allow a PATCH to /users/:userId', async function () {
       const res = await request
         .patch(`/users/${firstUserIdTest}`)
         .set({ Authorization: `Bearer ${accessToken}` })
@@ -79,7 +81,7 @@ describe('User and Auth Endpoint Tests', function () {
       expect(res.status).to.equal(403);
     });
 
-    it('should disallow a PUT to /users/:userId with an nonexistent ID', async function () {
+    it('should not allow a PUT to /users/:userId with an nonexistent ID', async function () {
       const res = await request
         .put(`/users/i-do-not-exist`)
         .set({ Authorization: `Bearer ${accessToken}` })
@@ -93,7 +95,7 @@ describe('User and Auth Endpoint Tests', function () {
       expect(res.status).to.equal(404);
     });
 
-    it('should disallow a PUT to /users/:userId trying to change the permission flags', async function () {
+    it('should not allow a PUT to /users/:userId trying to change the permission flags', async function () {
       const res = await request
         .put(`/users/${firstUserIdTest}`)
         .set({ Authorization: `Bearer ${accessToken}` })
@@ -120,6 +122,39 @@ describe('User and Auth Endpoint Tests', function () {
       expect(res.status).to.equal(204);
     });
 
+    it('should not allow a POST to /auth/refresh-token without a token', async function () {
+      const res = await request
+        .post('/auth/refresh-token')
+        .set({ Authorization: `Bearer ${accessToken}` });
+      expect(res.status).to.equal(400);
+      expect(res.body).not.to.be.empty;
+      expect(res.body).to.be.an('object');
+      expect(res.body.errors[0]).to.be.a('string');
+      expect(res.body.errors[0]).equals('Missing required field: refreshToken');
+    });
+
+    it('should not allow a POST to /auth/refresh-token without an access token', async function () {
+      const res = await request.post('/auth/refresh-token');
+      expect(res.status).to.equal(401);
+      expect(res.body).to.be.empty;
+    });
+
+    it('should not allow a POST to /auth/refresh-token without a valid Bearer key', async function () {
+      const res = await request
+        .post('/auth/refresh-token')
+        .set({ Authorization: `foo bar` });
+      expect(res.status).to.equal(401);
+      expect(res.body).to.be.empty;
+    });
+
+    it('should not allow a POST to /auth/refresh-token without a valid Bearer value', async function () {
+      const res = await request
+        .post('/auth/refresh-token')
+        .set({ Authorization: `Bearer foo` });
+      expect(res.status).to.equal(403);
+      expect(res.body).to.be.empty;
+    });
+
     describe('with a new set of permission flags', function () {
       it('should allow a POST to /auth/refresh-token', async function () {
         const res = await request
@@ -143,7 +178,7 @@ describe('User and Auth Endpoint Tests', function () {
             password: firstUserBody.password,
             firstName: newFirstName2,
             lastName: newLastName2,
-            permissionFlags: 2,
+            permissionFlags: PermissionFlag.APP_PERMISSION_A,
           });
         expect(res.status).to.equal(204);
       });
@@ -162,6 +197,18 @@ describe('User and Auth Endpoint Tests', function () {
         expect(res.body.email).to.equal(firstUserBody.email);
         expect(res.body._id).to.equal(firstUserIdTest);
       });
+
+      // it('should allow a GET to /users with admin permissions', async function () {
+      //   const res = await request
+      //     .get('/users')
+      //     .set({ Authorization: `Bearer ${accessToken}` })
+      //     .send();
+      //   expect(res.status).to.equal(200);
+      //   expect(res.body).not.to.be.empty;
+      //   expect(res.body).to.be.an('object');
+      //   // expect(res.body[0].id).to.be.a('string');
+      //   // expect(res.body[0].id).equals(firstUserIdTest);
+      // });
 
       it('should allow a DELETE from /users/:userId', async function () {
         const res = await request

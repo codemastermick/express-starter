@@ -1,13 +1,14 @@
-import app from '../src/app';
+import app from '../../src/app';
 import supertest from 'supertest';
 import { expect } from 'chai';
 
 describe('Index Test', function () {
   let request: supertest.SuperAgentTest;
-  before(function () {
+  before(function (done) {
     request = supertest.agent(app);
+    done();
   });
-  after(function (done) {
+  after(async function (done) {
     // shut down the Express.js server
     app.close();
     done();
