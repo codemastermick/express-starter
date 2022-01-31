@@ -6,7 +6,7 @@ import BodyValidationMiddleware from '../common/middleware/body.validation.middl
 import { body } from 'express-validator';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
-import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
+import { PermissionFlag } from '../common/enums/common.permissionflag.enum';
 
 export class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {

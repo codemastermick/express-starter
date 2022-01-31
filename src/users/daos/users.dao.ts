@@ -3,7 +3,7 @@ import { PatchUserDto } from '../dto/patch.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
 import shortid from 'shortid';
 import mongooseService from '../../common/services/mongoose.service';
-import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
+import { PermissionFlag } from '../../common/enums/common.permissionflag.enum';
 import Logger from '../../common/services/logger.service';
 
 class UsersDao {
