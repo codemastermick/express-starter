@@ -15,6 +15,7 @@ export class UsersRoutes extends CommonRoutesConfig {
 
   configureRoutes(): express.Application {
     this.app
+      //TODO write test for GET /users
       .route(`/users`)
       .get(
         jwtMiddleware.validJWTNeeded,
