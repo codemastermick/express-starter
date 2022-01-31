@@ -23,6 +23,12 @@ class MongooseService {
     return mongoose;
   }
 
+  async shutdown() {
+    logger.debug('Stopping service...');
+    await mongoose.disconnect();
+    logger.debug('Disconnected from MongoDB');
+  }
+
   connectWithRetry = () => {
     logger.debug('Attempting to connect to MongoDB...');
     mongoose
