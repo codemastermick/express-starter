@@ -75,7 +75,7 @@ const onError = (error: NodeJS.ErrnoException) => {
 export default server;
 
 server.on('close', () => {
-  // await mongooseService.shutdown();
+  // mongooseService.shutdown();
   logger.debug('Server stopped');
 });
 
