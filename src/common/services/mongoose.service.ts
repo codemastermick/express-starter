@@ -30,6 +30,14 @@ class MongooseService {
   }
 
   connectWithRetry = () => {
+    if (mongoose.connection.readyState === 1) {
+      logger.debug('Already connected to MongoDB');
+      return;
+    }
+    if (mongoose.connection.readyState === 2) {
+      logger.debug('Already connecting to MongoDB');
+      return;
+    }
     logger.debug('Attempting to connect to MongoDB...');
     mongoose
       .connect(dbConnectionUrl, this.mongooseOptions)
