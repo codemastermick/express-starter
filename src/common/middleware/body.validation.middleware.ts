@@ -1,5 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
+import { StatusCodes } from 'http-status-codes';
+import HttpException from '../exceptions/http.exception';
 
 class BodyValidationMiddleware {
   verifyBodyFieldsErrors(
@@ -8,8 +10,12 @@ class BodyValidationMiddleware {
     next: express.NextFunction
   ) {
     const errors = validationResult(req);
+    let msg = '';
+    for (let i = 0; i < errors.array().length; i++) {
+      msg += JSON.stringify(errors.array()[i]);
+    }
     if (!errors.isEmpty()) {
-      return res.status(400).send({ errors: errors.array() });
+      throw new HttpException(StatusCodes.BAD_REQUEST, msg);
     }
     next();
   }

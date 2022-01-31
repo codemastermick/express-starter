@@ -2,6 +2,7 @@ import app from '../../../src/app';
 import supertest from 'supertest';
 import { expect } from 'chai';
 import mongoose from 'mongoose';
+import { StatusCodes } from 'http-status-codes';
 import { PermissionFlag } from '../../../src/common/enums/common.permissionflag.enum';
 
 let firstUserIdTest = '';
@@ -36,6 +37,39 @@ describe('User and Auth Endpoint Tests', function () {
     expect(res.body).to.be.an('object');
     expect(res.body.id).to.be.a('string');
     firstUserIdTest = res.body.id;
+  });
+
+  it('should not allow a user to be created with an invalid email', async function () {
+    const res = await request
+      .post('/users')
+      .send({ email: 'invalid', password: 'valid-password' });
+    expect(res.status).to.equal(400);
+    expect(res.body).not.to.be.empty;
+    expect(res.body).to.be.an('object');
+    expect(res.body.message).to.be.a('string');
+    const data = JSON.parse(res.body.message);
+    expect(data).to.be.an('object');
+    expect(data.value).to.equal('invalid');
+    expect(data.msg).to.equal('Invalid value');
+    expect(data.param).to.equal('email');
+    expect(data.location).to.equal('body');
+  });
+
+  it('should not allow a user to be created with an invalid password', async function () {
+    const res = await request
+      .post('/users')
+      .send({ email: firstUserBody.email, password: '123' });
+    expect(res.status).to.equal(400);
+    expect(res.body).not.to.be.empty;
+    expect(res.body).to.be.an('object');
+    expect(res.body.message).to.be.a('string');
+    const data = JSON.parse(res.body.message);
+    expect(data).to.be.an('object');
+    expect(data.value).to.equal('123');
+    expect(data.msg).to.equal('Must include password (5+ characters)');
+    expect(data.param).to.equal('password');
+    expect(data.location).to.equal('body');
+    // {"value":"dummymail","msg":"Invalid value","param":"email","location":"body"}
   });
 
   it('should allow a POST to /auth', async function () {
@@ -134,15 +168,19 @@ describe('User and Auth Endpoint Tests', function () {
 
     it('should not allow a POST to /auth/refresh-token without an access token', async function () {
       const res = await request.post('/auth/refresh-token');
-      expect(res.status).to.equal(401);
-      expect(res.body).to.be.empty;
+      expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
+      expect(res.body).to.be.an('object');
+      expect(res.body.message).to.be.a('string');
+      expect(res.body.message).to.equal(
+        'You are not authorized to access this resource. Please try logging in first.'
+      );
     });
 
     it('should not allow a POST to /auth/refresh-token without a valid Bearer key', async function () {
       const res = await request
         .post('/auth/refresh-token')
         .set({ Authorization: `foo bar` });
-      expect(res.status).to.equal(401);
+      expect(res.status).to.equal(StatusCodes.FORBIDDEN);
       expect(res.body).to.be.empty;
     });
 
