@@ -60,6 +60,24 @@ app.get('/', (_req: express.Request, res: express.Response) => {
   res.status(200).send(runningMessage);
 });
 
+// handle all kind of server errors
+const onError = (error: NodeJS.ErrnoException) => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  const bind = 'Port ' + PORT;
+  switch (error.code) {
+    case 'EACCES':
+      logger.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+    case 'EADDRINUSE':
+      logger.error(`Could not start server. ${bind} already in use`);
+      process.exit(1);
+    default:
+      throw error;
+  }
+};
+
 // this is exported here to prevent the server from listening just from being imported
 export default server;
 
@@ -82,3 +100,5 @@ server.listen(PORT, () => {
   mongooseService.connectWithRetry();
   logger.debug(runningMessage);
 });
+
+server.on('error', onError);
