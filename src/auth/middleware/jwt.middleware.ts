@@ -59,6 +59,7 @@ class JwtMiddleware {
         if (authorization[0] !== 'Bearer') {
           return res.status(401).send();
         } else {
+          //TODO this is where the refresh token should be invalidated
           res.locals.jwt = jwt.verify(authorization[1], JWT_SECRET) as Jwt;
           next();
         }
