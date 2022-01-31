@@ -55,8 +55,8 @@ app.get('/', (_req: express.Request, res: express.Response) => {
 export default server;
 
 server.on('close', async () => {
-  logger.debug('Stopping server');
-  await mongooseService.shutdown();
+  // await mongooseService.shutdown();
+  logger.debug('Server stopped');
 });
 
 process.on('SIGINT', async function () {
@@ -70,5 +70,6 @@ server.listen(PORT, () => {
   routes.forEach((route: CommonRoutesConfig) => {
     logger.debug(`Routes configured for ${route.getName()}`);
   });
+  mongooseService.connectWithRetry();
   logger.debug(runningMessage);
 });
