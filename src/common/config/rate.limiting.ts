@@ -7,11 +7,13 @@ const refreshMinutes = 15;
 const refreshRequests = 10;
 
 const limitBuilder = (minutes: number, requests: number) => {
+  const m = minutes >= 1 ? minutes : 1;
+  const r = requests >= 1 ? requests : 1;
   return rateLimit({
-    windowMs: minutes * 60 * 1000,
-    max: requests,
-    message: `Too many requests, please try again in ${minutes} ${
-      minutes > 1 ? 'minutes' : 'minute'
+    windowMs: m * 60 * 1000,
+    max: r,
+    message: `Too many requests, please try again in ${m} ${
+      m > 1 ? 'minutes' : 'minute'
     }`
   });
 };
