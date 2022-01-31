@@ -22,7 +22,6 @@ export class AuthRoutes extends CommonRoutesConfig {
     ]);
 
     this.app.post(`/auth/refresh-token`, [
-      //TODO block request if token refreshed too recently - some kind of rate limiting
       refreshTokenLimiter,
       jwtMiddleware.validJWTNeeded,
       jwtMiddleware.verifyRefreshBodyField,
