@@ -51,6 +51,9 @@ app.get('/', (_req: express.Request, res: express.Response) => {
   res.status(200).send(runningMessage);
 });
 
+// this is exported here to prevent the server from listening just from being imported
+export default server;
+
 server.on('close', async () => {
   // await mongooseService.shutdown();
   logger.debug('Server stopped');
@@ -62,9 +65,6 @@ process.on('SIGINT', async function () {
     server.close();
   }
 });
-
-// this is exported here to prevent the server from listening just from being imported
-export default server;
 
 server.listen(PORT, () => {
   routes.forEach((route: CommonRoutesConfig) => {
