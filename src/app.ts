@@ -1,14 +1,11 @@
-import dotenv from 'dotenv';
-// const dotenvResult = dotenv.config();
+import dotenv from 'dotenv-safe';
 try {
-  dotenv.config();
+  dotenv.config({
+    example: '.env.example',
+  });
 } catch (error) {
-  console.log(error);
+  throw error;
 }
-
-// if (dotenvResult.error) {
-//   throw dotenvResult.error;
-// }
 
 import express from 'express';
 import * as http from 'http';
@@ -19,12 +16,24 @@ import { AuthRoutes } from './auth/auth.routes.config';
 import helmet from 'helmet';
 import morganMiddleware from './common/middleware/morgan.middleware';
 import Logger from './common/services/logger.service';
+import errorHandler from './common/middleware/error.handler.middleware';
+import mongooseService from './common/services/mongoose.service';
+import rateLimit from 'express-rate-limit';
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50, // limit each IP to 50 requests per windowMs
+  message: 'Too many requests, please try again after 15 minutes',
+  // this above message is shown to user when max requests is exceeded
+});
+
+const APP_NAME = process.env.APP_NAME as string;
+const PORT = process.env.PORT as string;
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
-const port = process.env.PORT;
 const routes: Array<CommonRoutesConfig> = [];
-const logger: Logger = new Logger('express-starter');
+const logger: Logger = new Logger(APP_NAME);
 
 // here we are adding middleware to parse all incoming requests as JSON
 app.use(express.json());
@@ -35,24 +44,41 @@ app.use(cors());
 app.use(helmet());
 // this is our custom logging middleware
 app.use(morganMiddleware);
-
+// this applies rate limiting to the whole app
+app.use(limiter);
 // here we are adding the UserRoutes to our array,
 // after sending the Express.js application object to have the routes added to our app!
 routes.push(new UsersRoutes(app));
 // now we add the auth routes the same way as above
 routes.push(new AuthRoutes(app));
+// place the error handling middleware at the end of the chain to ensure we catch all errors
+app.use(errorHandler);
 
 // this is a simple route to make sure everything is working properly
-const runningMessage = `Server running at http://localhost:${port}`;
-app.get('/', (req: express.Request, res: express.Response) => {
+const runningMessage = `Server running at http://localhost:${PORT}`;
+app.get('/', (_req: express.Request, res: express.Response) => {
   res.status(200).send(runningMessage);
 });
 
+// this is exported here to prevent the server from listening just from being imported
 export default server;
 
-server.listen(port, () => {
+server.on('close', async () => {
+  // await mongooseService.shutdown();
+  logger.debug('Server stopped');
+});
+
+process.on('SIGINT', async function () {
+  if (server.listening) {
+    logger.debug('Caught signal interrupt. Starting shutdown');
+    server.close();
+  }
+});
+
+server.listen(PORT, () => {
   routes.forEach((route: CommonRoutesConfig) => {
     logger.debug(`Routes configured for ${route.getName()}`);
   });
+  mongooseService.connectWithRetry();
   logger.debug(runningMessage);
 });

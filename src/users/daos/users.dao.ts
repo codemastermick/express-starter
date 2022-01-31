@@ -2,14 +2,13 @@ import { CreateUserDto } from '../dto/create.user.dto';
 import { PatchUserDto } from '../dto/patch.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
 import shortid from 'shortid';
-import debug from 'debug';
 import mongooseService from '../../common/services/mongoose.service';
-import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
-
-const log: debug.IDebugger = debug('app:in-memory-dao');
+import { PermissionFlag } from '../../common/enums/common.permissionflag.enum';
+import Logger from '../../common/services/logger.service';
 
 class UsersDao {
   Schema = mongooseService.getMongoose().Schema;
+  logger = new Logger('DAO:users');
   userSchema = new this.Schema(
     {
       _id: String,
@@ -24,7 +23,7 @@ class UsersDao {
   User = mongooseService.getMongoose().model('Users', this.userSchema);
 
   constructor() {
-    log('Created new instance of UsersDao');
+    this.logger.debug('Created new instance of UsersDao');
   }
 
   async addUser(userFields: CreateUserDto) {
@@ -35,6 +34,7 @@ class UsersDao {
       permissionFlags: PermissionFlag.FREE_PERMISSION,
     });
     await user.save();
+    this.logger.debug('Created new user');
     return userId;
   }
 

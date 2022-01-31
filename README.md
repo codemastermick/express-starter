@@ -10,7 +10,7 @@ This project serves as a batteries included backend server, ready to use out of 
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/96b12a825e6846a1aa3a4fef8aca9615)](https://www.codacy.com/gh/codemastermick/express-starter/dashboard?utm_source=github.com&utm_medium=referral&utm_content=codemastermick/express-starter&utm_campaign=Badge_Grade)
 
-## :warning: Please note that this project is still in heavy development and is not recommended for production applications yet :warning:
+## :warning: Please note that this project is still in heavy development and is not recommended for production applications yet
 
 <hr>
 
@@ -46,6 +46,17 @@ To get started with the project, clone the repository and then install the depen
 git clone https://github.com/codemastermick/express-starter.git
 cd express-starter
 npm i
+```
+
+Now you will need to set up your environment variables. This can be done easily by copying the file `.env.example` and renaming it to `.env`. A sample configuration is below:
+
+```bash
+NODE_ENV=development
+APP_NAME=my-cool-backend-app
+PORT=3000
+JWT_SECRET=My!@!Se3cr8tH4sh3
+DB_CONNECTION_STRING=mongodb+srv://<USERNAME>:<PASSWORD>@<HOSTNAME>/<DATABASE>
+CODACY_PROJECT_TOKEN=<PASTE-YOUR-CODACY-TOKEN-HERE>
 ```
 
 ## Development[^1]

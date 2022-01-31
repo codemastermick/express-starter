@@ -4,13 +4,6 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
 const log: debug.IDebugger = debug('app:auth-controller');
-
-/**
- * This value is automatically populated from .env, a file which you will have
- * to create for yourself at the root of the project.
- *
- * See .env.example in the repo for the required format.
- */
 const jwtSecret: string = process.env.JWT_SECRET as string;
 const tokenExpirationInSeconds = 36000;
 
