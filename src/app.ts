@@ -58,7 +58,7 @@ const onError = (error: NodeJS.ErrnoException) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
-  const bind = 'Port ' + PORT;
+  const bind = `Port ${PORT}`;
   switch (error.code) {
     case 'EACCES':
       logger.error(`${bind} requires elevated privileges`);
