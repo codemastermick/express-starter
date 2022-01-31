@@ -81,15 +81,16 @@ const onError = (error: NodeJS.ErrnoException) => {
 // this is exported here to prevent the server from listening just from being imported
 export default server;
 
-server.on('close', async () => {
+server.on('close', () => {
   // await mongooseService.shutdown();
   logger.debug('Server stopped');
 });
 
-process.on('SIGINT', async function () {
+process.on('SIGINT', function () {
   if (server.listening) {
     logger.debug('Caught signal interrupt. Starting shutdown');
     server.close();
+    process.exit(1);
   }
 });
 
