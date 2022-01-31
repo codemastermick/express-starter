@@ -219,4 +219,25 @@ describe('User and Auth Endpoint Tests', function () {
       });
     });
   });
+
+  // it('should block refreshing tokens if rate limit is hit', async function () {
+  //   let res;
+  //   for (let i = 0; i < 15; i++) {
+  //     res = await request
+  //       .post('/auth/refresh-token')
+  //       .set({ Authorization: `Bearer ${accessToken}` })
+  //       .send({ refreshToken });
+  //     accessToken = res.body.accessToken;
+  //     refreshToken = res.body.refreshToken;
+  //   }
+  //   if (res) {
+  //     expect(res.status).to.equal(201);
+  //     expect(res.body).not.to.be.empty;
+  //     expect(res.body).to.be.an('object');
+  //     expect(res.body.accessToken).to.be.a('string');
+  //     expect(res.body.message).equals(
+  //       'Too many requests, please try again after 15 minutes'
+  //     );
+  //   }
+  // });
 });
