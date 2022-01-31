@@ -11,6 +11,3 @@ export const limitBuilder = (minutes: number, requests: number) => {
     }`
   });
 };
-
-// export const defaultLimiter = limitBuilder(defaultMinutes, defaultRequests);
-// export const refreshLimiter = limitBuilder(refreshMinutes, refreshRequests);
