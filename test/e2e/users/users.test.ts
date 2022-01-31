@@ -1,13 +1,12 @@
 import app from '../../../src/app';
 import supertest from 'supertest';
 import { expect } from 'chai';
-import shortid from 'shortid';
 import mongoose from 'mongoose';
 import { PermissionFlag } from '../../../src/common/enums/common.permissionflag.enum';
 
 let firstUserIdTest = '';
 const firstUserBody = {
-  email: `john.smith+${shortid.generate()}@fakemail.net`,
+  email: `john.smith@fakemail.net`,
   password: 'super-good-password'
 };
 

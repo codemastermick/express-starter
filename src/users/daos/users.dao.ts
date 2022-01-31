@@ -1,7 +1,7 @@
 import { CreateUserDto } from '../dto/create.user.dto';
 import { PatchUserDto } from '../dto/patch.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
-import shortid from 'shortid';
+import { v4 as uuidv4 } from 'uuid';
 import mongooseService from '../../common/services/mongoose.service';
 import { PermissionFlag } from '../../common/enums/common.permissionflag.enum';
 import Logger from '../../common/services/logger.service';
@@ -27,7 +27,7 @@ class UsersDao {
   }
 
   async addUser(userFields: CreateUserDto) {
-    const userId = shortid.generate();
+    const userId = uuidv4();
     const user = new this.User({
       _id: userId,
       ...userFields,
