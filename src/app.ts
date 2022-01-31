@@ -17,6 +17,7 @@ import helmet from 'helmet';
 import morganMiddleware from './common/middleware/morgan.middleware';
 import Logger from './common/services/logger.service';
 import errorHandler from './common/middleware/error.handler.middleware';
+import mongooseService from './common/services/mongoose.service';
 
 const APP_NAME = process.env.APP_NAME as string;
 const PORT = process.env.PORT as string;
@@ -50,7 +51,20 @@ app.get('/', (_req: express.Request, res: express.Response) => {
   res.status(200).send(runningMessage);
 });
 
+// this is exported here to prevent the server from listening just from being imported
 export default server;
+
+server.on('close', async () => {
+  logger.debug('Stopping server');
+  await mongooseService.shutdown();
+});
+
+process.on('SIGINT', async function () {
+  if (server.listening) {
+    logger.debug('Caught signal interrupt. Starting shutdown');
+    server.close();
+  }
+});
 
 server.listen(PORT, () => {
   routes.forEach((route: CommonRoutesConfig) => {
