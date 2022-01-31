@@ -4,11 +4,16 @@ import { expect } from 'chai';
 import mongoose from 'mongoose';
 import { StatusCodes } from 'http-status-codes';
 import { PermissionFlag } from '../../../src/common/enums/common.permissionflag.enum';
+import mongooseService from '../../../src/common/services/mongoose.service';
 
 let firstUserIdTest = '';
 const firstUserBody = {
   email: `john.smith@fakemail.net`,
   password: 'super-good-password'
+};
+const duplicateUserBody = {
+  email: `john.smith@fakemail.net`,
+  password: 'my-amazing-password'
 };
 
 let accessToken = '';
@@ -19,15 +24,18 @@ const newLastName2 = 'Everyman';
 
 describe('User and Auth Endpoint Tests', function () {
   let request: supertest.SuperAgentTest;
+  let allTestsRun = false;
   before(function (done) {
     request = supertest.agent(app);
     done();
   });
   after(function (done) {
     // shut down the Express.js server, close our MongoDB connection, then tell Mocha we're done:
-    app.close(() => {
-      mongoose.connection.close(done);
-    });
+    app.close();
+    if (allTestsRun) {
+      mongooseService.shutdown();
+    }
+    done();
   });
 
   it('should allow a POST to /users', async function () {
@@ -37,6 +45,15 @@ describe('User and Auth Endpoint Tests', function () {
     expect(res.body).to.be.an('object');
     expect(res.body.id).to.be.a('string');
     firstUserIdTest = res.body.id;
+  });
+
+  it('should not allow creating a user with a duplicate email', async function () {
+    const res = await request.post('/users').send(duplicateUserBody);
+    expect(res.status).to.equal(400);
+    expect(res.body).not.to.be.empty;
+    expect(res.body).to.be.an('object');
+    expect(res.body.error).to.be.a('string');
+    expect(res.body.error).to.equal('User email already exists');
   });
 
   it('should not allow a user to be created with an invalid email', async function () {
@@ -252,6 +269,7 @@ describe('User and Auth Endpoint Tests', function () {
           .delete(`/users/${firstUserIdTest}`)
           .set({ Authorization: `Bearer ${accessToken}` })
           .send();
+        allTestsRun = true;
         expect(res.status).to.equal(204);
       });
     });
