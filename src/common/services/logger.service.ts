@@ -6,7 +6,7 @@ import {
   logLevelColours,
   errorLog,
   logLevelNames,
-  timestampFormat,
+  timestampFormat
 } from '../config/logger.config';
 
 const { combine, timestamp, label } = winston.format;
@@ -38,19 +38,19 @@ const transports = [
   new winston.transports.File({
     filename: errorLog,
     level: 'error',
-    format: fileFormat,
+    format: fileFormat
   }),
   new winston.transports.File({
     filename: allLogs,
-    format: fileFormat,
-  }),
+    format: fileFormat
+  })
 ];
 
 const requestTransport = [
   new winston.transports.File({
     filename: accessLog,
-    format: fileFormat,
-  }),
+    format: fileFormat
+  })
 ];
 
 export default class Logger {
@@ -63,13 +63,13 @@ export default class Logger {
       level: level(),
       levels: logLevelNames,
       format: combine(label({ label: appName, message: true }), timestamp()),
-      transports,
+      transports
     });
     this.requestLogger = winston.createLogger({
       level: 'http',
       levels: { http: 0 },
       format: combine(label({ label: appName, message: true }), timestamp()),
-      transports: requestTransport,
+      transports: requestTransport
     });
     this.debugLog = debug(appName);
   }

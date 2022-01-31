@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-safe';
 try {
   dotenv.config({
-    example: '.env.example',
+    example: '.env.example'
   });
 } catch (error) {
   throw error;
@@ -23,7 +23,7 @@ import rateLimit from 'express-rate-limit';
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 50, // limit each IP to 50 requests per windowMs
-  message: 'Too many requests, please try again after 15 minutes',
+  message: 'Too many requests, please try again after 15 minutes'
   // this above message is shown to user when max requests is exceeded
 });
 

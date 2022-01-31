@@ -8,7 +8,7 @@ import { PermissionFlag } from '../../../src/common/enums/common.permissionflag.
 let firstUserIdTest = '';
 const firstUserBody = {
   email: `john.smith+${shortid.generate()}@fakemail.net`,
-  password: 'super-good-password',
+  password: 'super-good-password'
 };
 
 let accessToken = '';
@@ -76,7 +76,7 @@ describe('User and Auth Endpoint Tests', function () {
         .patch(`/users/${firstUserIdTest}`)
         .set({ Authorization: `Bearer ${accessToken}` })
         .send({
-          firstName: newFirstName,
+          firstName: newFirstName
         });
       expect(res.status).to.equal(403);
     });
@@ -90,7 +90,7 @@ describe('User and Auth Endpoint Tests', function () {
           password: firstUserBody.password,
           firstName: 'Marcos',
           lastName: 'Silva',
-          permissionFlags: 256,
+          permissionFlags: 256
         });
       expect(res.status).to.equal(404);
     });
@@ -104,7 +104,7 @@ describe('User and Auth Endpoint Tests', function () {
           password: firstUserBody.password,
           firstName: 'Marcos',
           lastName: 'Silva',
-          permissionFlags: 256,
+          permissionFlags: 256
         });
       expect(res.status).to.equal(400);
       expect(res.body.errors).to.be.an('array');
@@ -178,7 +178,7 @@ describe('User and Auth Endpoint Tests', function () {
             password: firstUserBody.password,
             firstName: newFirstName2,
             lastName: newLastName2,
-            permissionFlags: PermissionFlag.APP_PERMISSION_A,
+            permissionFlags: PermissionFlag.APP_PERMISSION_A
           });
         expect(res.status).to.equal(204);
       });

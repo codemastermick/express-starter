@@ -55,7 +55,7 @@ export class UsersRoutes extends CommonRoutesConfig {
       body('permissionFlags').isInt(),
       BodyValidationMiddleware.verifyBodyFieldsErrors,
       UsersMiddleware.userCantChangePermission,
-      UsersController.put,
+      UsersController.put
     ]);
 
     this.app.put(`/users/:userId/permissionFlags/:permissionFlags`, [
@@ -68,7 +68,7 @@ export class UsersRoutes extends CommonRoutesConfig {
       permissionMiddleware.permissionFlagRequired(
         PermissionFlag.FREE_PERMISSION
       ),
-      UsersController.updatePermissionFlags,
+      UsersController.updatePermissionFlags
     ]);
 
     this.app.patch(`/users/:userId`, [
@@ -90,7 +90,7 @@ export class UsersRoutes extends CommonRoutesConfig {
       permissionMiddleware.permissionFlagRequired(
         PermissionFlag.APP_PERMISSION_A
       ),
-      UsersController.patch,
+      UsersController.patch
     ]);
 
     return this.app;

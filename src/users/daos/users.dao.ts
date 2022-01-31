@@ -16,7 +16,7 @@ class UsersDao {
       password: { type: String, select: false },
       firstName: String,
       lastName: String,
-      permissionFlags: Number,
+      permissionFlags: Number
     },
     { id: false }
   );
@@ -31,7 +31,7 @@ class UsersDao {
     const user = new this.User({
       _id: userId,
       ...userFields,
-      permissionFlags: PermissionFlag.FREE_PERMISSION,
+      permissionFlags: PermissionFlag.FREE_PERMISSION
     });
     await user.save();
     this.logger.debug('Created new user');

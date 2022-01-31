@@ -14,16 +14,14 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [
-          { loader: 'ts-loader', options: { transpileOnly: true } },
-        ],
+        use: [{ loader: 'ts-loader', options: { transpileOnly: true } }],
         include: /src/,
-        exclude: /node_modules/,
-      },
-    ],
+        exclude: /node_modules/
+      }
+    ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js']
   },
   target: 'node',
   output: {
@@ -35,7 +33,5 @@ module.exports = {
   optimization: {
     usedExports: true
   },
-  plugins: [
-    new ForkTsCheckerWebpackPlugin()
-  ]
+  plugins: [new ForkTsCheckerWebpackPlugin()]
 };

@@ -15,7 +15,7 @@ export const logLevelNames = {
   warn: 1,
   info: 2,
   http: 3,
-  debug: 4,
+  debug: 4
 };
 
 // MUST MATCH THE LENGTH AND NAMES OF THE ABOVE
@@ -24,7 +24,7 @@ export const logLevelColours = {
   warn: 'yellow',
   info: 'green',
   http: 'magenta',
-  debug: 'white',
+  debug: 'white'
 };
 
 // configure the timestamp format used by the logging service

@@ -25,7 +25,7 @@ export class AuthRoutes extends CommonRoutesConfig {
       body('password').isString(),
       BodyValidationMiddleware.verifyBodyFieldsErrors,
       authMiddleware.verifyUserPassword,
-      authController.createJWT,
+      authController.createJWT
     ]);
 
     this.app.post(`/auth/refresh-token`, [
@@ -34,7 +34,7 @@ export class AuthRoutes extends CommonRoutesConfig {
       jwtMiddleware.validJWTNeeded,
       jwtMiddleware.verifyRefreshBodyField,
       jwtMiddleware.validRefreshNeeded,
-      authController.createJWT,
+      authController.createJWT
       //TODO invalidate old tokens
     ]);
 

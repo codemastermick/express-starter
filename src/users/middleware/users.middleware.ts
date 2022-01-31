@@ -55,7 +55,7 @@ class UsersMiddleware {
       next();
     } else {
       res.status(404).send({
-        errors: [`User ${req.params.userId} not found`],
+        errors: [`User ${req.params.userId} not found`]
       });
     }
   }
@@ -79,7 +79,7 @@ class UsersMiddleware {
       req.body.permissionFlags !== res.locals.user.permissionFlags
     ) {
       res.status(400).send({
-        errors: ['User cannot change permission flags'],
+        errors: ['User cannot change permission flags']
       });
     } else {
       next();
