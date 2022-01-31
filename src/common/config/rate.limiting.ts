@@ -1,10 +1,10 @@
 import rateLimit from 'express-rate-limit';
 
-const defaultLimitMinutes = 1;
-const defaultLimitRequests = 50;
+const defaultMinutes = 1;
+const defaultRequests = 50;
 
-const refreshLimitMinutes = 15;
-const refreshLimitRequests = 10;
+const refreshMinutes = 15;
+const refreshRequests = 10;
 
 const limitBuilder = (minutes: number, requests: number) => {
   return rateLimit({
@@ -16,11 +16,5 @@ const limitBuilder = (minutes: number, requests: number) => {
   });
 };
 
-export const defaultRateLimit = limitBuilder(
-  defaultLimitMinutes,
-  defaultLimitRequests
-);
-export const refreshTokenLimiter = limitBuilder(
-  refreshLimitMinutes,
-  refreshLimitRequests
-);
+export const defaultLimiter = limitBuilder(defaultMinutes, defaultRequests);
+export const refreshLimiter = limitBuilder(refreshMinutes, refreshRequests);

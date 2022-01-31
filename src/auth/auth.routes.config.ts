@@ -5,7 +5,7 @@ import express from 'express';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
 import { body } from 'express-validator';
 import jwtMiddleware from './middleware/jwt.middleware';
-import { refreshTokenLimiter } from '../common/config/rate.limiting';
+import { refreshLimiter } from '../common/config/rate.limiting';
 
 export class AuthRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -22,7 +22,7 @@ export class AuthRoutes extends CommonRoutesConfig {
     ]);
 
     this.app.post(`/auth/refresh-token`, [
-      refreshTokenLimiter,
+      refreshLimiter,
       jwtMiddleware.validJWTNeeded,
       jwtMiddleware.verifyRefreshBodyField,
       jwtMiddleware.validRefreshNeeded,

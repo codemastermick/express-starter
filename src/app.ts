@@ -18,7 +18,7 @@ import morganMiddleware from './common/middleware/morgan.middleware';
 import Logger from './common/services/logger.service';
 import errorHandler from './common/middleware/error.handler.middleware';
 import mongooseService from './common/services/mongoose.service';
-import { defaultRateLimit } from './common/config/rate.limiting';
+import { defaultLimiter } from './common/config/rate.limiting';
 
 const APP_NAME = process.env.APP_NAME as string;
 const PORT = process.env.PORT as string;
@@ -38,7 +38,7 @@ app.use(helmet());
 // this is our custom logging middleware
 app.use(morganMiddleware);
 // this applies rate limiting to the whole app
-app.use(defaultRateLimit);
+app.use(defaultLimiter);
 // here we are adding the UserRoutes to our array,
 // after sending the Express.js application object to have the routes added to our app!
 routes.push(new UsersRoutes(app));
