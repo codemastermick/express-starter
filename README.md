@@ -103,4 +103,4 @@ npm run test:debug  # run tests in debug mode
 [^2]: Testing suite is powered by [Mocha](https://mochajs.org), [Chai](https://www.chaijs.com), and [Supertest](https://github.com/visionmedia/supertest#readme)
 [^3]: Building is done with [Webpack](https://webpack.js.org)
 [^4]: Development mode does not minify the code and uses inline source maps
-[^5]: production mode will minify the codebase, as well as move source maps out to separate files
+[^5]: Production mode will minify the codebase, as well as move source maps out to separate files
