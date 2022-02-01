@@ -7,7 +7,17 @@ on:
 jobs:
   build:
     uses: codemastermick/express-starter/.github/workflows/build_and_lint.yml@main
-  job2:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+      fail-fast: false
+
+    needs: build
+    steps:
+      - run: npm run test:coverage
+  upload:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -15,11 +25,9 @@ jobs:
       fail-fast: false
     env:
       CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-    needs: build
+    needs: test
     steps:
-      - run: npm test:coverage
-      - name: Run codacy-coverage-reporter
-        uses: codacy/codacy-coverage-reporter-action@v1
+      - uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: coverage/lcov.info
