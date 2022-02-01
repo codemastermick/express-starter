@@ -1,8 +1,9 @@
 import express from 'express';
+import Logger from '../../common/services/logger.service';
 import userService from '../services/users.service';
-import debug from 'debug';
 
-const log: debug.IDebugger = debug('app:users-controller');
+const logger = new Logger('MIDDLEWARE:users');
+
 class UsersMiddleware {
   async validateSameEmailDoesNotExist(
     req: express.Request,
@@ -36,7 +37,7 @@ class UsersMiddleware {
     next: express.NextFunction
   ) => {
     if (req.body.email) {
-      log('Validating email', req.body.email);
+      logger.debug(`Validating email ${req.body.email}`);
 
       this.validateSameEmailBelongToSameUser(req, res, next);
     } else {

@@ -1,9 +1,9 @@
 import express from 'express';
-import debug from 'debug';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import Logger from '../../common/services/logger.service';
 
-const log: debug.IDebugger = debug('app:auth-controller');
+const logger = new Logger('CONTROLLER:auth');
 const jwtSecret: string = process.env.JWT_SECRET as string;
 const tokenExpirationInSeconds = 36000;
 
@@ -22,7 +22,7 @@ class AuthController {
       });
       return res.status(201).send({ accessToken: token, refreshToken: hash });
     } catch (err) {
-      log('createJWT error: %O', err);
+      logger.debug(`createJWT error: ${err}`);
       return res.status(500).send();
     }
   }

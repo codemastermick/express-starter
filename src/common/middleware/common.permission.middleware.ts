@@ -1,9 +1,8 @@
 import express from 'express';
 import { PermissionFlag } from '../enums/common.permissionflag.enum';
-import debug from 'debug';
+import Logger from '../services/logger.service';
 
-const log: debug.IDebugger = debug('app:common-permission-middleware');
-
+const logger = new Logger('MIDDLEWARE:permissions');
 class CommonPermissionMiddleware {
   permissionFlagRequired(requiredPermissionFlag: PermissionFlag) {
     return (
@@ -19,7 +18,7 @@ class CommonPermissionMiddleware {
           res.status(403).send();
         }
       } catch (e) {
-        log(e);
+        logger.debug(e as string);
       }
     };
   }
