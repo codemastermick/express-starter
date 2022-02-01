@@ -30,8 +30,8 @@ jobs:
           path: |
             package.json
             package-lock.json
-            LICENSE.md
+            LICENSE
             README.md
             dist
-            coverage
+            configs
           if-no-files-found: error
