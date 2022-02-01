@@ -9,6 +9,13 @@ jobs:
     uses: codemastermick/express-starter/.github/workflows/build_and_cache.yml@main
   test:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      APP_NAME: ${{ secrets.APP_NAME }}
+      PORT: ${{ secrets.PORT }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
