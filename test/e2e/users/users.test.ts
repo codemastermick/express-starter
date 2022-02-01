@@ -1,7 +1,6 @@
 import app from '../../../src/app';
 import supertest from 'supertest';
 import { expect } from 'chai';
-import mongoose from 'mongoose';
 import { StatusCodes } from 'http-status-codes';
 import { PermissionFlag } from '../../../src/common/enums/common.permissionflag.enum';
 import mongooseService from '../../../src/common/services/mongoose.service';
