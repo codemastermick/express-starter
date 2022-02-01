@@ -35,5 +35,4 @@ jobs:
             dist
             configs
             test
-            node_modules
           if-no-files-found: error
