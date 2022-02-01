@@ -2,8 +2,10 @@ import app from '../../../src/app';
 import supertest from 'supertest';
 import { expect } from 'chai';
 import { StatusCodes } from 'http-status-codes';
+import { decode } from 'jsonwebtoken';
 import { PermissionFlag } from '../../../src/common/enums/common.permissionflag.enum';
 import mongooseService from '../../../src/common/services/mongoose.service';
+import { Jwt } from '../../../src/common/types/jwt';
 
 let firstUserIdTest = '';
 const firstUserBody = {
@@ -85,7 +87,6 @@ describe('User and Auth Endpoint Tests', function () {
     expect(data.msg).to.equal('Must include password (5+ characters)');
     expect(data.param).to.equal('password');
     expect(data.location).to.equal('body');
-    // {"value":"dummymail","msg":"Invalid value","param":"email","location":"body"}
   });
 
   it('should allow a POST to /auth', async function () {
@@ -96,6 +97,12 @@ describe('User and Auth Endpoint Tests', function () {
     expect(res.body.accessToken).to.be.a('string');
     accessToken = res.body.accessToken;
     refreshToken = res.body.refreshToken;
+    const payload = decode(accessToken) as Jwt;
+    console.log(JSON.stringify(payload));
+    expect(payload.userId).to.equal(firstUserIdTest);
+    expect(payload.refreshKey).to.be.an('object');
+    expect(payload.permissionFlags).to.be.a('number');
+    expect(payload.permissionFlags).to.equal(1);
   });
 
   describe('with a valid access token', async function () {
