@@ -22,7 +22,7 @@ jobs:
             package.json
             package-lock.json
             LICENSE.md
+            README.md
             dist
-            .eleventy.js
-            11ty
+            coverage
           if-no-files-found: error
