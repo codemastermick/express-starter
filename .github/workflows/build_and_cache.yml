@@ -26,7 +26,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: public-artifact
+          name: build-output
           path: |
             package.json
             package-lock.json
@@ -34,4 +34,5 @@ jobs:
             README.md
             dist
             configs
+            test
           if-no-files-found: error
