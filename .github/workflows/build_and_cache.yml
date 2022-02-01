@@ -20,5 +20,16 @@ jobs:
           node-version: '16'
           cache: npm
       - run: npm ci
-      - run: npm install
       - run: npm run build:prod
+      – uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: public-artifact
+          path: |
+            package.json
+            package-lock.json
+            LICENSE.md
+            README.md
+            dist
+            coverage
+          if-no-files-found: error
