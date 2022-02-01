@@ -17,17 +17,13 @@ jobs:
     needs: build
     steps:
       - run: npm run test:coverage
-  upload:
+  codacy-coverage-reporter:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-      fail-fast: false
-    env:
-      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-    needs: test
+    name: codacy-coverage-reporter
     steps:
-      - uses: codacy/codacy-coverage-reporter-action@v1
+      - uses: actions/checkout@v2
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: coverage/lcov.info
