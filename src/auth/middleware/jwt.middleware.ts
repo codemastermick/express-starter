@@ -2,7 +2,9 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { Jwt } from '../../common/types/jwt';
+import { StatusCodes } from 'http-status-codes';
 import usersService from '../../users/services/users.service';
+import UnauthenticatedException from '../../common/exceptions/unauthorized.exception';
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -57,17 +59,19 @@ class JwtMiddleware {
       try {
         const authorization = req.headers['authorization'].split(' ');
         if (authorization[0] !== 'Bearer') {
-          return res.status(401).send();
+          throw new UnauthenticatedException();
         } else {
           //TODO this is where the refresh token should be invalidated
           res.locals.jwt = jwt.verify(authorization[1], JWT_SECRET) as Jwt;
           next();
         }
       } catch (err) {
-        return res.status(403).send();
+        //TODO add forbidden exception here
+        console.log(err);
+        return res.status(StatusCodes.FORBIDDEN).send();
       }
     } else {
-      return res.status(401).send();
+      throw new UnauthenticatedException();
     }
   }
 }

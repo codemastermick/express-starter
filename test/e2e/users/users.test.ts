@@ -1,13 +1,20 @@
 import app from '../../../src/app';
 import supertest from 'supertest';
 import { expect } from 'chai';
-import mongoose from 'mongoose';
+import { StatusCodes } from 'http-status-codes';
+import { decode } from 'jsonwebtoken';
 import { PermissionFlag } from '../../../src/common/enums/common.permissionflag.enum';
+import mongooseService from '../../../src/common/services/mongoose.service';
+import { Jwt } from '../../../src/common/types/jwt';
 
 let firstUserIdTest = '';
 const firstUserBody = {
   email: `john.smith@fakemail.net`,
   password: 'super-good-password'
+};
+const duplicateUserBody = {
+  email: `john.smith@fakemail.net`,
+  password: 'my-amazing-password'
 };
 
 let accessToken = '';
@@ -18,15 +25,18 @@ const newLastName2 = 'Everyman';
 
 describe('User and Auth Endpoint Tests', function () {
   let request: supertest.SuperAgentTest;
+  let allTestsRun = false;
   before(function (done) {
     request = supertest.agent(app);
     done();
   });
   after(function (done) {
     // shut down the Express.js server, close our MongoDB connection, then tell Mocha we're done:
-    app.close(() => {
-      mongoose.connection.close(done);
-    });
+    app.close();
+    if (allTestsRun) {
+      mongooseService.shutdown();
+    }
+    done();
   });
 
   it('should allow a POST to /users', async function () {
@@ -38,6 +48,47 @@ describe('User and Auth Endpoint Tests', function () {
     firstUserIdTest = res.body.id;
   });
 
+  it('should not allow creating a user with a duplicate email', async function () {
+    const res = await request.post('/users').send(duplicateUserBody);
+    expect(res.status).to.equal(400);
+    expect(res.body).not.to.be.empty;
+    expect(res.body).to.be.an('object');
+    expect(res.body.error).to.be.a('string');
+    expect(res.body.error).to.equal('User email already exists');
+  });
+
+  it('should not allow a user to be created with an invalid email', async function () {
+    const res = await request
+      .post('/users')
+      .send({ email: 'invalid', password: 'valid-password' });
+    expect(res.status).to.equal(400);
+    expect(res.body).not.to.be.empty;
+    expect(res.body).to.be.an('object');
+    expect(res.body.message).to.be.a('string');
+    const data = JSON.parse(res.body.message);
+    expect(data).to.be.an('object');
+    expect(data.value).to.equal('invalid');
+    expect(data.msg).to.equal('Invalid value');
+    expect(data.param).to.equal('email');
+    expect(data.location).to.equal('body');
+  });
+
+  it('should not allow a user to be created with an invalid password', async function () {
+    const res = await request
+      .post('/users')
+      .send({ email: firstUserBody.email, password: '123' });
+    expect(res.status).to.equal(400);
+    expect(res.body).not.to.be.empty;
+    expect(res.body).to.be.an('object');
+    expect(res.body.message).to.be.a('string');
+    const data = JSON.parse(res.body.message);
+    expect(data).to.be.an('object');
+    expect(data.value).to.equal('123');
+    expect(data.msg).to.equal('Must include password (5+ characters)');
+    expect(data.param).to.equal('password');
+    expect(data.location).to.equal('body');
+  });
+
   it('should allow a POST to /auth', async function () {
     const res = await request.post('/auth').send(firstUserBody);
     expect(res.status).to.equal(201);
@@ -46,6 +97,12 @@ describe('User and Auth Endpoint Tests', function () {
     expect(res.body.accessToken).to.be.a('string');
     accessToken = res.body.accessToken;
     refreshToken = res.body.refreshToken;
+    const payload = decode(accessToken) as Jwt;
+    console.log(JSON.stringify(payload));
+    expect(payload.userId).to.equal(firstUserIdTest);
+    expect(payload.refreshKey).to.be.an('object');
+    expect(payload.permissionFlags).to.be.a('number');
+    expect(payload.permissionFlags).to.equal(1);
   });
 
   describe('with a valid access token', async function () {
@@ -134,15 +191,19 @@ describe('User and Auth Endpoint Tests', function () {
 
     it('should not allow a POST to /auth/refresh-token without an access token', async function () {
       const res = await request.post('/auth/refresh-token');
-      expect(res.status).to.equal(401);
-      expect(res.body).to.be.empty;
+      expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
+      expect(res.body).to.be.an('object');
+      expect(res.body.message).to.be.a('string');
+      expect(res.body.message).to.equal(
+        'You are not authorized to access this resource. Please try logging in first.'
+      );
     });
 
     it('should not allow a POST to /auth/refresh-token without a valid Bearer key', async function () {
       const res = await request
         .post('/auth/refresh-token')
         .set({ Authorization: `foo bar` });
-      expect(res.status).to.equal(401);
+      expect(res.status).to.equal(StatusCodes.FORBIDDEN);
       expect(res.body).to.be.empty;
     });
 
@@ -214,6 +275,7 @@ describe('User and Auth Endpoint Tests', function () {
           .delete(`/users/${firstUserIdTest}`)
           .set({ Authorization: `Bearer ${accessToken}` })
           .send();
+        allTestsRun = true;
         expect(res.status).to.equal(204);
       });
     });

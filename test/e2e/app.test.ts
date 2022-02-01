@@ -21,4 +21,13 @@ describe('Index Test', function () {
       `Server running at http://localhost:${process.env.PORT}`
     );
   });
+
+  it('should throw an error when trying to access a non existent route', async function () {
+    const res = await request.get('/foo').send();
+    expect(res.status).to.equal(404);
+    expect(res.body.message).to.be.a('string');
+    expect(res.body.message).equals(
+      'Could not access the resource at Could not find any resource at 127.0.0.1:3000/foo.'
+    );
+  });
 });
