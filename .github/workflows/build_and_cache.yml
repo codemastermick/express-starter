@@ -2,6 +2,7 @@ name: Build & Cache
 on: workflow_call
 jobs:
   build_and_cache:
+    name: 'Build and cache'
     runs-on: ubuntu-latest
     strategy:
       matrix:
