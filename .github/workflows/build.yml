@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: '16'
           cache: npm
-      - run: npm install
+      - run: npm ci
       - run: npm run build:prod
       - uses: actions/upload-artifact@v2
         if: always()
