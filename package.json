@@ -20,7 +20,8 @@
     "test:coverage": "./node_modules/c8/bin/c8.js -c configs/.c8rc npm test",
     "test:debug": "cross-env DEBUG=* npm test",
     "test:watch": "npm test -- --watch",
-    "codacy": "cat ./coverage/lcov.info | codacy-coverage && rimraf ./coverage"
+    "codacy": "cat ./coverage/lcov.info | codacy-coverage && rimraf ./coverage",
+    "lint": "eslint"
   },
   "keywords": [],
   "author": "Codemaster Mick",
