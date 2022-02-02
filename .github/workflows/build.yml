@@ -1,5 +1,17 @@
 name: Build & Cache
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      NODE_ENV:
+        required: true
+      APP_NAME:
+        required: true
+      PORT:
+        required: true
+env:
+  NODE_ENV: ${{secrets.NODE_ENV}}
+  APP_NAME: ${{secrets.APP_NAME}}
+  PORT: ${{secrets.PORT}}
 jobs:
   build_and_cache:
     name: 'Build and cache'
@@ -8,13 +20,6 @@ jobs:
       matrix:
         node-version: [12.x, 14.x, 16.x]
       fail-fast: false
-    env:
-      NODE_ENV: ${{ secrets.NODE_ENV }}
-      APP_NAME: ${{ secrets.APP_NAME }}
-      PORT: ${{ secrets.PORT }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
-      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
