@@ -1,4 +1,4 @@
-name: Build & Cache
+name: Test with Coverage
 on:
   workflow_call:
     secrets:
@@ -16,12 +16,12 @@ env:
   DB_CONNECTION_STRING: ${{secrets.DB_CONNECTION_STRING}}
   CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
 jobs:
-  build_and_cache:
-    name: 'Build and cache'
+  test_and_generate_coverage:
+    name: 'Test and generate coverage reports'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [16.x]
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -30,17 +30,4 @@ jobs:
           node-version: '16'
           cache: npm
       - run: npm ci
-      - run: npm run build:prod
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: build-output
-          path: |
-            package.json
-            package-lock.json
-            LICENSE
-            README.md
-            dist
-            configs
-            test
-          if-no-files-found: error
+      - run: npm run test:coverage

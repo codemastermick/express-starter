@@ -1,0 +1,29 @@
+name: Lint, Build, Test, and Generate Coverage Reports
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml@main
+  build:
+    uses: ./.github/workflows/build.yml@main
+    needs: lint
+    secrets:
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      APP_NAME: ${{ secrets.APP_NAME }}
+      PORT: ${{ secrets.PORT }}
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
+      DB_CONNECTION_STRING: ${{secrets.DB_CONNECTION_STRING}}
+      CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
+  test:
+    uses: ./.github/workflows/testing.yml@main
+    needs: build
+    secrets:
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      APP_NAME: ${{ secrets.APP_NAME }}
+      PORT: ${{ secrets.PORT }}
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
+      DB_CONNECTION_STRING: ${{secrets.DB_CONNECTION_STRING}}
+      CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
