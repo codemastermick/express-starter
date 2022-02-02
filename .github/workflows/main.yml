@@ -6,9 +6,9 @@ on:
     branches: [main]
 jobs:
   lint:
-    uses: ./.github/workflows/lint.yml@main
+    uses: ./.github/workflows/lint.yml
   build:
-    uses: ./.github/workflows/build.yml@main
+    uses: ./.github/workflows/build.yml
     needs: lint
     secrets:
       NODE_ENV: ${{ secrets.NODE_ENV }}
@@ -18,7 +18,7 @@ jobs:
       DB_CONNECTION_STRING: ${{secrets.DB_CONNECTION_STRING}}
       CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
   test:
-    uses: ./.github/workflows/testing.yml@main
+    uses: ./.github/workflows/testing.yml
     needs: build
     secrets:
       NODE_ENV: ${{ secrets.NODE_ENV }}
