@@ -8,6 +8,12 @@ on:
         required: true
       PORT:
         required: true
+      JWT_SECRET:
+        required: true
+      DB_CONNECTION_STRING:
+        required: true
+      CODACY_PROJECT_TOKEN:
+        required: true
 env:
   NODE_ENV: ${{ secrets.NODE_ENV }}
   APP_NAME: ${{ secrets.APP_NAME }}
