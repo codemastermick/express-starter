@@ -42,7 +42,11 @@ jobs:
         with:
           name: build-output
           path: |
+            package.json
+            package-lock.json
             LICENSE
             README.md
-            dist/*
+            dist
+            configs
+            test
           if-no-files-found: error
